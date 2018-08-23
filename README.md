@@ -1,2 +1,2 @@
 # FYS4150
-Personal repository for Computational physics 
+Repository for MetOs group in Computational physics 
