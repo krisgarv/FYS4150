@@ -1,0 +1,82 @@
+\documentclass[norsk]{article}
+
+\usepackage[norsk]{babel}
+\usepackage{graphicx}
+\usepackage{caption}
+\DeclareCaptionFormat {empty}{}
+\captionsetup{format=empty}
+\usepackage[utf8]{inputenc}
+\usepackage{placeins}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{capt-of}
+\usepackage{listings}
+\lstset{language=Python}
+\lstset{frame=none}
+\lstset{caption={Insert code directly in your document}}
+\lstset{label={lst:code_direct}}
+\lstset{basicstyle=\footnotesize}
+%\renewcommand{\thesection}{}
+%\renewcommand{\thesubsection}{}
+
+\begin{document}
+	\vspace*{1cm}
+	\begin{center}
+	{\huge FYS4150 - Project 1 \par}
+	{\huge Linear 2nd order differential equations\par}
+	\vspace{0.5cm}
+	{\Large Kristine Garvin \\ Silje Christine Iversen \par}	
+	\vspace{0.5cm}
+	{\Large September 10, 2018 \par}
+	\vspace{1cm}
+	\end{center}
+	
+\section{Introduction}
+In this project we will solve the one-dimentional Poisson equation with Dirichlet boundary conditions
+
+\section{Method}
+\subsection{Gaussian elimination}
+\section{Implementation}
+\subsection{Numerical solution}
+\subsection{Dynamical memory handling}
+\section{Results}
+\subsection{Analytic solution}
+\begin{align*}
+-\frac{d^2u(x)}{dx^2} &= f(x) \\[6pt]
+u"(x) &= -100e^{-10x} \\[6pt]
+u'(x) &= \int -100e^{-10x} dx\\[6pt]
+u'(x) &= 10e^{-10x} + C \\[6pt]
+u(x) &= \int \left(10e^{-10x} + C\right) dx \\[6pt]
+u(x) &= -e^{-10x} + Cx + D \\
+\text{Inserting boundary conditions}\\
+u(0) &= -e^0 + D = 0 \\[6pt]
+&\Rightarrow D = 1 \\[6pt]
+u(1) &= -e^{-10} + C + 1 = 0 \\[6pt]
+&\Rightarrow C = -(1 - e^{-10})\\
+\\
+u(x) &= 1 - (1 - e^{-10}) - e^{-10x}\\
+\end{align*}
+\subsection{Numerial solution}
+\subsection{Errors}
+\section{Conclution}
+
+\section{References}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
