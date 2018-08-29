@@ -26,16 +26,35 @@
 	{\huge FYS4150 - Project 1 \par}
 	{\huge Linear 2nd order differential equations\par}
 	\vspace{0.5cm}
-	{\Large Kristine Garvin \\ Silje Christine Iversen \par}	
+	{\Large Dina ... \\ Kristine Garvin \\ Silje Christine Iversen \par}	
 	\vspace{0.5cm}
 	{\Large September 10, 2018 \par}
 	\vspace{1cm}
 	\end{center}
 	
 \section{Introduction}
-In this project we will solve the one-dimentional Poisson equation with Dirichlet boundary conditions
+In this project we will solve a general one-dimentional Poisson equation with Dirichlet boundary conditions by rewriting it as a set of linear equations. 
 
 \section{Method}
+We are to solve the equation $$-u"(x) = f(x),$$
+with the Dirichlet boundary conditions \\ 
+\begin{center}
+$x\in (0,1), $ \hspace*{1cm} $u(0) = u(1) = 0.$
+\end{center}
+By defining a discretized approximation to $u$ as $v_i$, with grid points $x_i = ih$ in the interval from $x_0$ to $x_{n+1}=1$, we then have the boundary conditions $v_0=v_{n+1}=0$. Where the step lenght is defined as $h = 1/(n+1)$. We have approwimated the second derivative of u with a Taylor expansion: .................................................................................................................
+$$\displaystyle-\frac{v_{i-1} - 2v_i + v_{i+1}}{h^2}=f_i\hspace*{1cm} 
+for \hspace{3pt} i=1, 2,...,n$$
+\\
+\begin{align*}
+\i=&1:   2v_1 - v_2 &= f_1/h^2 \\
+\i=&2:  -v_1 + 2v_2 - v_3 &= f_2/h^2 \\ 
+\i=&3:  -v_2 + 2v_3 - v_4 &= f_3/h^2 \\
+\cdot \\
+\cdot \\
+\cdot \\
+\i=&n:  -v_{n-1} + 2v_n &= f_n/h^2 \\ 
+\end{align*}
+\subsection{LU - decomposition}
 \subsection{Gaussian elimination}
 \section{Implementation}
 \subsection{Numerical solution}
