@@ -1,8 +1,43 @@
 Dymanic memory allocation: The array size is determined during the
 execution of the program.
+TIP: NUMPY
 
 GRUPPETIME:
   - Hvor mye av LU-dekomposisjon skal vi føre inn i rapporten?
   - Fixed a, b, c?
   - Input argument: f, n, a, b, c?
   - Legge til dinastabell til git repository
+
+
+1a) LINEAR SET OF EQ:
+  -vis at...Før inn i LaTeX
+
+
+1b) GENERAL MATRIX (1st code)
+  - Set up the general algorithm
+  - Find precise nr of FLOPS needed to solve the equations
+  -Plot algorithm for n = [10, 100, 1000]
+  -Plot analytisk løsning med samme antall grid pkt. n
+    use linspace
+
+1c) TRIDIAGONAL MATRIX (2nd code)
+  -Find nr of FLOPS for the tridiagonal matrix
+  -change algorithm
+  -compare CPU time with general algorithm up to 10^6
+
+1d) RELATIVE ERROR (4th code)
+  -Compute relative error for n = [10, 10², ..., 10⁷]
+  -Table of results
+  - Comment
+
+1e) LU - DECOMPOSITION (5th code)
+  - use library to compute LU for matixes [10x10, ..., 10³x10³]
+  - compare CPU time between tridiagonal and LU
+  - Table of results
+  - Find FLOPS
+  - Can you run your LU for n = 10^5? Comment
+
+KODE:
+  -Les input argument
+  -Dynamical memory allocation
+  -
