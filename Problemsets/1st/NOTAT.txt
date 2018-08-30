@@ -1,0 +1,8 @@
+Dymanic memory allocation: The array size is determined during the
+execution of the program.
+
+GRUPPETIME:
+  - Hvor mye av LU-dekomposisjon skal vi føre inn i rapporten?
+  - Fixed a, b, c?
+  - Input argument: f, n, a, b, c?
+  - Legge til dinastabell til git repository
