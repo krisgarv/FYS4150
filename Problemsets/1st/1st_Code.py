@@ -7,7 +7,7 @@ x0 = 0.0
 xn = 1.0
 n = 100
 h = (xn - x0)/(n)
-
+print ('Hello world')
 def func(z):
     return 100.0*exp(-10.0*z)
 
