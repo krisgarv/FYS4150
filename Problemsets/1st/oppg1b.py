@@ -12,12 +12,12 @@ x = np.linspace(0, 1, n+2)
 v = np.zeros_like(x)
 
 #Creating the vectors:
-a_vec 		= np.zeros(n-1)
-a_vec[:] 	= a
+a_vec		= np.zeros(n-1)
+a_vec[:]	= a
 
-b_vec 		= np.zeros(n)
-b_vec[:] 	= b
-b_tilde 	= np.zeros(n)
+b_vec		= np.zeros(n)
+b_vec[:]	= b
+b_tilde		= np.zeros(n)
 
 c_vec 		= np.zeros(n-1)
 c_vec[:] 	= c
