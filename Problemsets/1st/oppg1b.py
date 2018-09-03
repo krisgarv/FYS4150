@@ -33,7 +33,7 @@ b_tilde[1] = b_vec[1] - c_vec[0]*a_vec[0]/b_tilde[0]
 d_tilde[0] = d_vec[0]
 
 d_tilde[1] = d_vec[1] - d_tilde[0]*a_vec[0]/b_vec[0]
-"""
+
 t0 = time.time()
 for i in range(2, n+1):
 	b_tilde[i] = b_vec[i] - c_vec[i-1]*a_vec[i-1]/b_tilde[i-1]
@@ -47,4 +47,5 @@ t1 = time.time()
 print(t1-t0)
 print(np.size(a_vec), np.size(a_tilde))
 print(b_tilde)
-"""
+
+
