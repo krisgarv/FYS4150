@@ -3,15 +3,25 @@ import sys
 import matplotlib.pyplot as plt
 import time
 
+#Getting the matrix-size from the terminal:
 n = int(sys.argv[1])
 
+#Matrix values:
 a = -1.0
 b= 2.0
 c = -1.0
+
+#Defining x, and the step size h:
 x = np.linspace(0, 1, n+2)
-v = np.zeros_like(x)
+h = 1.0/(n+1)
+
+#Function for finding the d's:
+def f(x):
+	return 100*np.exp(-10*x)
 
 #Creating the vectors:
+v 		= np.zeros_like(x)
+
 a_vec		= np.zeros(n-1)
 a_vec[:]	= a
 
@@ -26,6 +36,11 @@ d_vec		= np.zeros(n)
 d_tilde		= np.zeros(n)
 d_hat		= np.zeros(n)
 
+#Looping to find d-vector:
+for i in range(0, n):
+	d_vec[i] = f(x[i+1])*h**2
+
+#Inserting values for b_tilde, d_tilde and d_hat:
 b_tilde[0] = b_vec[0]
 
 b_tilde[1] = b_vec[1] - c_vec[0]*a_vec[0]/b_tilde[0]
@@ -34,18 +49,22 @@ d_tilde[0] = d_vec[0]
 
 d_tilde[1] = d_vec[1] - d_tilde[0]*a_vec[0]/b_vec[0]
 
+#Looping to find b_tilde, d_tilde and d_hat:
 t0 = time.time()
-for i in range(2, n+1):
+for i in range(2, n):
 	b_tilde[i] = b_vec[i] - c_vec[i-1]*a_vec[i-1]/b_tilde[i-1]
 	d_tilde[i] = d_vec[i] - d_tilde[i-1]*a_vec[i-1]/b_tilde[i-1]
 
-for i in range(n-1, -1, -1):
-	d_hat[i] = d_tilde[i] - d_tilde[i+1]*c_vec[i]/b_tilde[i+1]
+d_hat[-1] = d_tilde[-1]
 
+for i in range(n-2, -1, -1):
+	d_hat[i] = d_tilde[i] - d_tilde[i+1]*c_vec[i]/b_tilde[i+1]
 t1 = time.time()
 
-print(t1-t0)
-print(np.size(a_vec), np.size(a_tilde))
-print(b_tilde)
+#b_tilde * v = d_hat
+
+print("Time used: ",(t1-t0)," s")
+
+
 
 
