@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 #Getting the matrix-size from the terminal:
 n = int(sys.argv[1])
 
-#Matrix values:
-b = 2.0
-
 #Defining x, and the step size h:
 x = np.linspace(0, 1, n+2)
 h = 1.0/(n+1)
@@ -19,10 +16,7 @@ def f(x):
 #Creating the vectors:
 v 		= np.zeros_like(x)
 
-b_vec		= np.zeros(n)
-b_vec[:]	= b
 b_tilde		= np.zeros(n)
-
 
 d_vec		= np.zeros(n)
 d_tilde		= np.zeros(n)
@@ -33,10 +27,10 @@ for i in range(0, n):
 
 #Finding b_tilde and d_tilde:
 d_tilde[0] = d_vec[0]
-b_tilde[0] = b_vec[0]
+b_tilde[0] = 2.0
 
 for i in range(1, n):
-	b_tilde[i] = b_vec[i] - 1/b_tilde[i-1]
+	b_tilde[i] = 2.0 - 1/b_tilde[i-1]
 	d_tilde[i] = d_vec[i] + d_tilde[i-1]/b_tilde[i-1]
 
 #Calculating v_n, which is the first in the backward elimination:
