@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
+import time
 
 #Getting the matrix-size from the terminal:
 n = int(sys.argv[1])
@@ -42,6 +43,7 @@ for i in range(0, n):
 d_tilde[0] = d_vec[0]
 b_tilde[0] = b_vec[0]
 
+t0 = time.time()
 for i in range(1, n):
 	b_tilde[i] = b_vec[i] - c_vec[i-1]*a_vec[i-1]/b_tilde[i-1]
 	d_tilde[i] = d_vec[i] - d_tilde[i-1]*a_vec[i-1]/b_tilde[i-1]
@@ -52,6 +54,7 @@ v[n] = d_tilde[n-1]/b_tilde[n-1]
 #Calculating v_(n-1) until v_1
 for i in range(n-1, 0, -1): 
 	v[i] = (d_tilde[i-2] - c_vec[i-2]*v[i+1])/b_tilde[i-2]
+t1 = time.time()
 
 #Analytic answer:
 def u(x): 
@@ -62,6 +65,9 @@ plt.plot(x, v, x, u(x))
 plt.legend( ["data", "analytic"] )
 plt.title("For n=%d" % (n))
 plt.show()
+
+#Return CPU time:
+print("Time used: ", t1 - t0, "s")
 
 
 
