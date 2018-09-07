@@ -32,15 +32,17 @@ b_tilde[0] = 2.0
 
 t0 = time.time()
 for i in range(1, n):
-	b_tilde[i] = 2.0 - 1/b_tilde[i-1]
+	b_tilde[i] = 2.0 - 1.0/b_tilde[i-1]
 	d_tilde[i] = d_vec[i] + d_tilde[i-1]/b_tilde[i-1]
 
 #Calculating v_n, which is the first in the backward elimination:
-v[n] = d_tilde[n-1]/b_tilde[n-1]
+#v[0] = 0
+#v[n+1] = 0
+#v[n] = d_tilde[n-1]/b_tilde[n-1]
 
 #Calculating v_(n-1) until v_1
-for i in range(n-1, 0, -1):
-	v[i] = (d_tilde[i-2] + v[i+1])/b_tilde[i-2]
+for i in range(n, 0, -1):
+	v[i] = (d_tilde[i-1] + v[i+1])/b_tilde[i-1]
 t1 = time.time()
 
 #Analytic answer:
