@@ -38,11 +38,11 @@ for n in n_val:
 		d_tilde[i] = d_vec[i] + d_tilde[i-1]/b_tilde[i-1]
 
 	#Calculating v_n, which is the first in the backward elimination:
-	v[n] = d_tilde[n-1]/b_tilde[n-1]
+	#v[n] = d_tilde[n-1]/b_tilde[n-1]
 
 	#Calculating v_(n-1) until v_1
-	for i in range(n-1, 0, -1):
-		v[i] = (d_tilde[i-2] + v[i+1])/b_tilde[i-2]
+	for i in range(n, 0, -1):
+		v[i] = (d_tilde[i-1] + v[i+1])/b_tilde[i-1]
 
 	#Analytic answer:
 	def u(x):
@@ -57,16 +57,16 @@ for n in n_val:
 
 	error_max = np.max(np.log10(np.abs((v_sliced - u_sliced)/u_sliced)))
 	#??????WHAAAAT are we taking max of????
-	
+
 	error.append(error_max)
 	h_list.append(h)
 	print(n)
-	
 
-#Plotting:	
+
+#Plotting:
 error_arr = np.array(error)
 h_arr = np.array(h_list)
 plt.plot(np.log10(n_val), error_arr) #Supposed to be h_arr
-plt.xlabel("$log_{10}(n)$") 
-plt.ylabel("Maxval. of $log_{10}(\epsilon)$")
+plt.xlabel("$log_{10}(n)$")
+plt.ylabel("Maxval. of $\epsilon$")
 plt.show()
