@@ -48,14 +48,10 @@ for i in range(1, n):
 	b_tilde[i] = b_vec[i] - c_vec[i-1]*a_vec[i-1]/b_tilde[i-1]
 	d_tilde[i] = d_vec[i] - d_tilde[i-1]*a_vec[i-1]/b_tilde[i-1]
 
-#Calculating v_n, which is the first in the backward elimination:
-#v[n] = d_tilde[n-1]/b_tilde[n-1]
-
-#Calculating v_(n-1) until v_1
+#Calculating v
 for i in range(n, 0, -1):
 	v[i] = (d_tilde[i-1] - c_vec[i-1]*v[i+1])/b_tilde[i-1]
 t1 = time.time()
-
 
 #Analytic answer:
 def u(x):
