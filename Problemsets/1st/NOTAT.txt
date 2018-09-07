@@ -41,3 +41,26 @@ KODE:
   -Les input argument
   -Dynamical memory allocation
   -
+
+  ------------------------------------------------------------
+  Hva som mangler (slett når oppgaven er gjennomført!)
+
+  - Kjør program 5-6 ganger (b & c) for n <= 10^6 og finn gjennomsnittstid
+  - skriv inn i tabell i rapporten
+  - plot b for n = 10, 100, 1000 sammen med analytisk
+
+  - endre litt på LU for å (gain performance)
+  - Endre LU program s.a. det printer CPU tid for n = 10^4
+  - print CPU tid for c for n = 10^4, kommenter resultatet
+  - prøv å kjør LU for n=10^5
+
+  - plot relativ error, sett inn i rapporten
+
+  - LU program mangler kommentarer
+
+  - se over kommentarer i alle program
+
+  - før inn plot i rapporten
+
+
+  - ellers se latex fil
