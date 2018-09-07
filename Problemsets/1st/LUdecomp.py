@@ -12,6 +12,7 @@ n = int(sys.argv[1])
 #n=10
 
 x = np.linspace(0, 1, n+2)
+v = np.array(np.zeros_like(x))
 d = np.zeros(n)
 h = 1.0/(n+1)
 
@@ -46,9 +47,16 @@ M.append(r_n)
 A = np.array(M)
 #P, L, U = scipy.linalg.lu(A)
 lu, piv = scipy.linalg.lu_factor(A)
-v = np.array(np.zeros_like(x))
+
+#
+t0 = time.time()
 w = scipy.linalg.lu_solve((lu, piv), d)
+t1 = time.time()
+
 v[1:-1] = w
 #print(v)
 plt.plot(x, v, x, u(x))
+plt.legend( ["data", "analytic"] )
+plt.title("For n=%d" % (n))
 plt.show()
+print("Time used:" , t1 - t0, "s")
