@@ -51,10 +51,10 @@ KODE:
   - plot b for n = 10, 100, 1000 sammen med analytisk
   - før inn plot i rapporten
 
-  KRISINTE- endre litt på LU for å (gain performance)
-  KRISTINE- Endre LU program s.a. det printer CPU tid for n = 10^4
+x  KRISINTE- endre litt på LU for å (gain performance)
+x  KRISTINE- Endre LU program s.a. det printer CPU tid for n = 10^4
   KRISTINE- print CPU tid for c og LU for n = 10^4, kommenter resultatet i rapporten
-  SILJE- prøv å kjør LU for n=10^5
+x  SILJE- prøv å kjør LU for n=10^5
     --- kommenter memory error i rapporten
 
   - plot relativ error, sett inn i rapporten

@@ -53,10 +53,13 @@ for i in range(n, 0, -1):
 	v[i] = (d_tilde[i-1] - c_vec[i-1]*v[i+1])/b_tilde[i-1]
 t1 = time.time()
 
+# Calculating the time spendt by the general solver:
+timer=t1-t0
+
 #Analytic answer:
 def u(x):
 	return 1 - (1 - np.exp(-10))*x - np.exp(-10*x)
-
+"""
 #Plot:
 plt.plot(x, v, x, u(x))
 plt.legend( ["data", "analytic"] )
@@ -64,8 +67,8 @@ plt.title("For n=%d" % (n))
 plt.show()
 
 #Return CPU time:
-print("Time used: ", t1 - t0, "s")
-
-timer=t1-t0
+print("Time used: ", timer, "s")
+"""
+# Writing the time spendt to a logfile for further evaluation:
 with open('logfile.txt', 'a') as log:
-	log.write('1B - n=%d, Timer: %.17f s\n' % (n, timer))
+	log.write('1B - n=%d, CPU time: %.17f s\n' % (n, timer))
