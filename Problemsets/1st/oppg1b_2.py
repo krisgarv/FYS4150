@@ -65,3 +65,7 @@ plt.show()
 
 #Return CPU time:
 print("Time used: ", t1 - t0, "s")
+
+timer=t1-t0
+with open('logfile.txt', 'a') as log:
+	log.write('1B - n=%d, Timer: %.17f s\n' % (n, timer))
