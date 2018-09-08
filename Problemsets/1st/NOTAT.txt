@@ -53,7 +53,8 @@ KODE:
 
 x  KRISINTE- endre litt på LU for å (gain performance)
 x  KRISTINE- Endre LU program s.a. det printer CPU tid for n = 10^4
-  KRISTINE- print CPU tid for c og LU for n = 10^4, kommenter resultatet i rapporten
+x  KRISTINE- print CPU tid for c og LU for n = 10^4,
+    --- kommenter resultatet i rapporten
 x  SILJE- prøv å kjør LU for n=10^5
     --- kommenter memory error i rapporten
 
