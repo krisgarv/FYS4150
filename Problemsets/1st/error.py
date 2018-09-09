@@ -55,8 +55,7 @@ for n in n_val:
 	u = u(x)
 	u_sliced = u[1:-1]
 
-	error_max = np.max(np.log10(np.abs((v_sliced - u_sliced)/u_sliced)))
-	#??????WHAAAAT are we taking max of????
+	error_max = np.max(np.abs((v_sliced - u_sliced)/u_sliced))
 
 	error.append(error_max)
 	h_list.append(h)
@@ -66,7 +65,8 @@ for n in n_val:
 #Plotting:
 error_arr = np.array(error)
 h_arr = np.array(h_list)
-plt.plot(np.log10(n_val), error_arr) #Supposed to be h_arr
-plt.xlabel("$log_{10}(n)$")
-plt.ylabel("Maxval. of $\epsilon$")
+plt.plot(np.log10(h_arr), np.log10(error_arr)) #Supposed to be h_arr
+plt.title('Relative error, a function of step size', size=17)
+plt.xlabel("$log_{10}(h)$", size=15)
+plt.ylabel("$log_{10}(\epsilon)$", size=15)
 plt.show()
