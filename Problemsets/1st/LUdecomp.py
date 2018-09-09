@@ -6,10 +6,10 @@ import time
 import scipy
 import scipy.linalg as sl
 
-# Getting the matrix-size from the terminal:
+# Fetching matrix-size from the command line:
 n = int(sys.argv[1])
 
-# Array of zeros of length [0, n+1]:
+# Arrays of length [0, n+1]:
 x = np.linspace(0, 1, n+2)
 v = np.array(np.zeros_like(x))
 # Array of length [1, n]:
@@ -84,14 +84,12 @@ v[1:-1] = w
 
 # Calculating time spendt by the LU solver:
 timer=t1-t0
-"""
+
 # Plotting Numerical solution compared to analytical
 plt.plot(x, v, x, u(x))
+plt.xlabel('x')
+plt.ylabel('f(x)')
 plt.legend( ["Numerical", "Analytic"] )
-plt.title("n=%d" % (n))
-#plt.show()
+plt.title("%d Grid points" % (n))
+plt.show()
 print("Time used:" , timer, "s")
-"""
-# Writing the time spendt to a logfile for further evaluation:
-with open('logfile.txt', 'a') as log:
-	log.write('LU - n=%d, CPU time: %.17f s\n' % (n, timer))
