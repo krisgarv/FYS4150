@@ -43,13 +43,13 @@ KODE:
   -
 
   ------------------------------------------------------------
-  Hva som mangler (slett når oppgaven er gjennomført!)
+  Hva som mangler (merk med x når oppgaven er gjennomført!)
 
-  - Kjør program 5-6 ganger (b & c) for n <= 10^6 og finn gjennomsnittstid
-  - skriv inn i tabell i rapporten
+x  - Kjør program 5-6 ganger (b & c) for n <= 10^6 og finn gjennomsnittstid
+x  - skriv inn i tabell i rapporten
 
-  - plot b for n = 10, 100, 1000 sammen med analytisk
-  - før inn plot i rapporten
+x  - plot b for n = 10, 100, 1000 sammen med analytisk
+x  - før inn plot i rapporten
 
 x  KRISINTE- endre litt på LU for å (gain performance)
 x  KRISTINE- Endre LU program s.a. det printer CPU tid for n = 10^4
@@ -58,10 +58,10 @@ x  KRISTINE- print CPU tid for c og LU for n = 10^4,
 x  SILJE- prøv å kjør LU for n=10^5
     --- kommenter memory error i rapporten
 
-  - plot relativ error, sett inn i rapporten
+x  - plot relativ error, sett inn i rapporten
 
-  KRISTINE- LU program mangler kommentarer
+x  KRISTINE- LU program mangler kommentarer
 
-  - se over kommentarer i alle program + labels på plot
+x  - se over kommentarer i alle program + labels på plot
 
-  - ellers se latex fil
+x  - ellers se latex fil
