@@ -59,7 +59,7 @@ for n in n_val:
 
 	error.append(error_max)
 	h_list.append(h)
-	print(n)
+	print('n=%d error=%.20f' % (n, error_max))
 
 
 #Plotting:
