@@ -9,13 +9,14 @@ import matplotlib.pyplot as plt
 # OBS! Super slow since n_val contains 1e7
 n_val = np.array([int(1e1), int(1e2), int(1e3), int(1e4), int(1e5), \
 int(1e6), int(1e7)])
+
 # Empty lists
 error = []
 h_list = []
 
 # Looping over all n values
 for n in n_val:
-	#vDefining x, and the step size h:
+	# Defining x, and the step size h:
 	x = np.linspace(0, 1, n+2)
 	h = 1.0/(n+1)
 
@@ -54,7 +55,7 @@ for n in n_val:
 		u[:] = 1 - (1 - np.exp(-10))*x - np.exp(-10*x)
 		return u
 
-	# Inserting boundary conditions to our solutions
+	# Inserting boundary conditions to our solutions:
 	v_sliced = v[1:-1]
 	u = u(x)
 	u_sliced = u[1:-1]
@@ -62,18 +63,18 @@ for n in n_val:
 	# Compute the relative error:
 	error_max = np.max(np.abs((v_sliced - u_sliced)/u_sliced))
 
-	# Appending maximal error value of n to list of errors
+	# Appending maximal error value of n to list of errors:
 	error.append(error_max)
 	h_list.append(h)
 	print('n=%d error=%.20f' % (n, error_max))
 
-# Converting lists to arrays for plotting
+# Converting lists to arrays for plotting:
 error_arr = np.array(error)
 h_arr = np.array(h_list)
 
 #Plotting:
-plt.plot(np.log10(h_arr), np.log10(error_arr)) #Supposed to be h_arr
+plt.plot(np.log10(h_arr), np.log10(error_arr))
 plt.title('Relative error, a function of step size', size=17)
 plt.xlabel("$log_{10}(h)$", size=15)
-plt.ylabel("$log_{10}(\epsilon)$", size=15)
+plt.ylabel("$\epsilon$", size=15)
 plt.show()
