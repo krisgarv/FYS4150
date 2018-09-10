@@ -66,7 +66,7 @@ def u(x):
 # Plot:
 plt.plot(x, v, x, u(x))
 plt.xlabel('x')
-plt.ylabel('f(x)')
+plt.ylabel('$v(x)$ and $u(x)$')
 plt.legend( ["Numerical", "Analytic"] )
 plt.title("%d Grid points" % (n))
 plt.show()
