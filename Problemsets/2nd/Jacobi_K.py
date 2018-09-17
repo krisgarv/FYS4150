@@ -2,6 +2,7 @@ import numpy as np
 import sys
 import scipy.linalg as sl
 from math import *
+import time
 #N = int(sys.argv[1])
 # Initial values
 N = 3
@@ -18,7 +19,22 @@ A = sl.toeplitz(r, r)
 # Creating a identity matrix:
 R = np.identity(N-1)
 
-# Finding the largest value off the diagonal
+# Solution found from library functions:
+def nmpy_eigenval(A):
+    lmbda, eigenvec = np.linalg.eig(A)
+    return lmbda
+
+# Function which calculates analytic solution:
+def analytic_eigenval(N, d, a):
+    lmbda = []
+    for i in range(1, N):
+        l = d + 2.0*a*np.cos((i*np.pi)/(N))
+        lmbda.append(l)
+    return lmbda
+
+
+# Functions needed for Jacobi's method:
+# Finding the largest value off the diagonal:
 def maxoffdiag(A):
     maxval = 0.0
     for i in range(N-2):
@@ -30,7 +46,7 @@ def maxoffdiag(A):
                 maxval = Aij
     return maxval, k, l
 
-# Rotation
+# Defining the rotation matrix
 def rotate(A, k, l):
     if A[l,k] != 0.0 :
         tau = (A[l,l] - A[k,k])/(2.0*A[k,l])
@@ -65,17 +81,38 @@ def rotate(A, k, l):
     return A, R
 
 # Input from functions to Jacobi's method:
+max_offdiag, k, l = maxoffdiag(A) # initital max value off diagonal
 epsilon = 1.0e-8
 maxiter = float(N)**3  # maximum number of iterations
-max_offdiag, k, l = maxoffdiag(A) # max value of off diagonal elements
 initer = 0 # initial iteration value
 
 # Jacobi's method:
+t0 = time.time()
 while (max_offdiag > epsilon and initer < maxiter):
     max_offdiag, k, l = maxoffdiag(A)
     A, R = rotate(A, k, l)
     initer = initer + 1
+t1 = time.time()
+time_jacobi = t1 - t0
 
+# Analytic calculation:
+analytic = analytic_eigenval(N, d, a)
+
+# Numpys solution:
+t0 = time.time()
+library = nmpy_eigenval(A)
+t1 = time.time()
+time_numpy = t1 - t0
+
+print("Eigenvalues obtained analytically: %a" %(analytic))
+print (' ')
+print("Eigenvalues obtained by library function from numpy: %a" \
+    %(library))
+print("Time spendt by numpys method, for a %dx%d matrix: %g" \
+    %(N-1, N-1, time_numpy))
+print (' ')
 print ("Eigenvalues obtained by Jacobi's method: %a" % (np.diag(A)) )
+print ("Time spendt by Jacobi's method, for a %dx%d matrix: %g"\
+    %(N-1, N-1, time_jacobi))
 print ("Number of similarity transformations, for %dx%d matrix:\
  %d" % (N-1, N-1, initer))
