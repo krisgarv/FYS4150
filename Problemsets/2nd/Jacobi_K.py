@@ -3,9 +3,9 @@ import sys
 import scipy.linalg as sl
 from math import *
 import time
-N = int(sys.argv[1])
+#N = int(sys.argv[1])
 # Initial values
-#N = 3
+N = 3
 h = 1.0/N
 d = (1.0/h**2)*2.0
 a = (1.0/h**2)*-1.0
@@ -19,6 +19,7 @@ A = sl.toeplitz(r, r)
 # Creating a identity matrix:
 R = np.identity(N-1)
 
+#--------------------------------------------------------------------
 # Solution found from library functions:
 def nmpy_eigenval(A):
     lmbda, eigenvec = np.linalg.eig(A)
@@ -32,7 +33,7 @@ def analytic_eigenval(N, d, a):
         lmbda.append(l)
     return lmbda
 
-
+#---------------------------------------------------------------------
 # Functions needed for Jacobi's method:
 # Finding the largest value off the diagonal:
 def maxoffdiag(A):
@@ -80,20 +81,19 @@ def rotate(A, k, l):
         R[i,l] = c*r_il + s*r_ik
     return A, R
 
-# Input from functions to Jacobi's method:
-max_offdiag, k, l = maxoffdiag(A) # initital max value off diagonal
-epsilon = 1.0e-8
-maxiter = float(N)**3  # maximum number of iterations
-initer = 0 # initial iteration value
 
 # Jacobi's method:
-t0 = time.time()
-while (max_offdiag > epsilon and initer < maxiter):
-    max_offdiag, k, l = maxoffdiag(A)
-    A, R = rotate(A, k, l)
-    initer = initer + 1
-t1 = time.time()
-time_jacobi = t1 - t0
+def Jacobi(A):
+    # Initial input for Jacobi's method:
+    max_offdiag, k, l = maxoffdiag(A) # initital max value off diagonal
+    epsilon = 1.0e-8
+    maxiter = float(N)**3  # maximum number of iterations
+    initer = 0 # initial iteration value
+    while (max_offdiag > epsilon and initer < maxiter):
+        max_offdiag, k, l = maxoffdiag(A)
+        A, R = rotate(A, k, l)
+        initer = initer + 1
+    return A, R, initer
 
 # Analytic calculation:
 analytic = analytic_eigenval(N, d, a)
@@ -104,6 +104,12 @@ library = nmpy_eigenval(A)
 t1 = time.time()
 time_numpy = t1 - t0
 
+# Jacobi solution:
+t0 = time.time()
+Jacobi_A, Jacobi_R, Jacobi_iter = Jacobi(A)
+t1 = time.time()
+time_jacobi = t1 - t0
+
 print("Eigenvalues obtained analytically: %a" %(analytic))
 print (' ')
 print("Eigenvalues obtained by library function from numpy: %a" \
@@ -111,14 +117,38 @@ print("Eigenvalues obtained by library function from numpy: %a" \
 print("Time spendt by numpys method, for a %dx%d matrix: %g" \
     %(N-1, N-1, time_numpy))
 print (' ')
-print ("Eigenvalues obtained by Jacobi's method: %a" % (np.diag(A)) )
+print ("Eigenvalues obtained by Jacobi's method: %a" % (np.diag(Jacobi_A)) )
 print ("Time spendt by Jacobi's method, for a %dx%d matrix: %g"\
     %(N-1, N-1, time_jacobi))
 print ("Number of similarity transformations, for %dx%d matrix:\
- %d" % (N-1, N-1, initer))
+ %d" % (N-1, N-1, Jacobi_iter))
+
+#-------------------------------------------------------------------------
+
+import unittest
+
+class MyTest(unittest.TestCase):
+
+    def test_maxoffdiag(self):
+        # 2x2 symmetric matrix
+        A = [[1, 4],[4, 5]]
+        maxval, k, l = maxoffdiag(A)
+        self.assertEqual(maxval, 4)
 
 
-""" 2c)
+    def test_jacobi(self):
+        # simple 2x2 symmetric matrix with known Eigenvalues
+        Ax = [[2, -1],[-1, 2]]
+        max_offdiag = -1.0
+        initer = 0
+        A, R, initer = Jacobi(Ax)
+        eigenvalues = np.diag(A)
+        lmbda1 = 1
+        lmbda2 = 3
+        self.assertEqual(eigenvalues[1] == lmbda1)
+        self.assertEqual(eigenvalues[0] == lmbda2)
+"""
+ 2c)
 Implement tests for:
 -the rotation function
     is orthogonality preserverd?
