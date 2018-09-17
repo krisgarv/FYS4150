@@ -3,9 +3,9 @@ import sys
 import scipy.linalg as sl
 from math import *
 import time
-#N = int(sys.argv[1])
+N = int(sys.argv[1])
 # Initial values
-N = 3
+#N = 3
 h = 1.0/N
 d = (1.0/h**2)*2.0
 a = (1.0/h**2)*-1.0
@@ -116,3 +116,16 @@ print ("Time spendt by Jacobi's method, for a %dx%d matrix: %g"\
     %(N-1, N-1, time_jacobi))
 print ("Number of similarity transformations, for %dx%d matrix:\
  %d" % (N-1, N-1, initer))
+
+
+""" 2c)
+Implement tests for:
+-the rotation function
+    is orthogonality preserverd?
+-the maxoffdiag function
+    is maxval the largest one?
+-the jacobi method
+    for a simple 2x2 matrix
+    correct eigenvalues?
+-OTHER TESTS?
+"""
