@@ -76,4 +76,6 @@ while (max_offdiag > epsilon and initer < maxiter):
     A, R = rotate(A, k, l)
     initer = initer + 1
 
-print (A, R)
+print ("Eigenvalues obtained by Jacobi's method: %a" % (np.diag(A)) )
+print ("Number of similarity transformations, for %dx%d matrix:\
+ %d" % (N-1, N-1, initer))
