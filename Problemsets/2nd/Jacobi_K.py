@@ -4,20 +4,18 @@ import scipy.linalg as sl
 from math import *
 import time
 #N = int(sys.argv[1])
-# Initial values
-N = 3
-h = 1.0/N
-d = (1.0/h**2)*2.0
-a = (1.0/h**2)*-1.0
+# Hardcoded initial values for comparison with analytic and numpy solver
+Ntest = 3
+h = 1.0/Ntest
+dtest = (1.0/h**2)*2.0
+atest = (1.0/h**2)*-1.0
 
-# Creating input arrays for toeplitz matrix:
-r = np.zeros(N-1)
-r[0] = d
-r[1] = a
-A = sl.toeplitz(r, r)
 
-# Creating a identity matrix:
-R = np.identity(N-1)
+r = np.zeros(Ntest-1)
+r[0] = dtest
+r[1] = atest
+Atest = sl.toeplitz(r, r)
+
 
 #--------------------------------------------------------------------
 # Solution found from library functions:
@@ -36,7 +34,7 @@ def analytic_eigenval(N, d, a):
 #---------------------------------------------------------------------
 # Functions needed for Jacobi's method:
 # Finding the largest value off the diagonal:
-def maxoffdiag(A):
+def maxoffdiag(A, N):
     maxval = 0.0
     for i in range(N-2):
         for j in range(1, N-1):
@@ -48,7 +46,7 @@ def maxoffdiag(A):
     return maxval, k, l
 
 # Defining the rotation matrix
-def rotate(A, k, l):
+def rotate(A, R, N, k, l):
     if A[l,k] != 0.0 :
         tau = (A[l,l] - A[k,k])/(2.0*A[k,l])
         if tau > 0 :
@@ -83,30 +81,37 @@ def rotate(A, k, l):
 
 
 # Jacobi's method:
-def Jacobi(A):
+def Jacobi(N, d, a):
+    # Creating input arrays for toeplitz matrix:
+    r = np.zeros(N-1)
+    r[0] = d
+    r[1] = a
+    A = sl.toeplitz(r, r)
+    # Creating a identity matrix:
+    R = np.identity(N-1)
     # Initial input for Jacobi's method:
-    max_offdiag, k, l = maxoffdiag(A) # initital max value off diagonal
+    max_offdiag, k, l = maxoffdiag(A, N) # initital max value off diagonal
     epsilon = 1.0e-8
     maxiter = float(N)**3  # maximum number of iterations
     initer = 0 # initial iteration value
     while (max_offdiag > epsilon and initer < maxiter):
-        max_offdiag, k, l = maxoffdiag(A)
-        A, R = rotate(A, k, l)
+        max_offdiag, k, l = maxoffdiag(A, N)
+        A, R = rotate(A, R, N, k, l)
         initer = initer + 1
-    return A, R, initer
+    return A, R, N, initer
 
 # Analytic calculation:
-analytic = analytic_eigenval(N, d, a)
+analytic = analytic_eigenval(Ntest, dtest, atest)
 
 # Numpys solution:
 t0 = time.time()
-library = nmpy_eigenval(A)
+library = nmpy_eigenval(Atest)
 t1 = time.time()
 time_numpy = t1 - t0
 
 # Jacobi solution:
 t0 = time.time()
-Jacobi_A, Jacobi_R, Jacobi_iter = Jacobi(A)
+Jacobi_A, Jacobi_R, N, Jacobi_iter = Jacobi(Ntest, dtest, atest)
 t1 = time.time()
 time_jacobi = t1 - t0
 
@@ -131,22 +136,23 @@ class MyTest(unittest.TestCase):
 
     def test_maxoffdiag(self):
         # 2x2 symmetric matrix
-        A = [[1, 4],[4, 5]]
-        maxval, k, l = maxoffdiag(A)
+        A = np.array([[1, 4],[4, 5]])
+        N = 3
+        maxval, k, l = maxoffdiag(A, N)
         self.assertEqual(maxval, 4)
 
 
     def test_jacobi(self):
         # simple 2x2 symmetric matrix with known Eigenvalues
-        Ax = [[2, -1],[-1, 2]]
-        max_offdiag = -1.0
-        initer = 0
-        A, R, initer = Jacobi(Ax)
-        eigenvalues = np.diag(A)
-        lmbda1 = 1
-        lmbda2 = 3
-        self.assertEqual(eigenvalues[1] == lmbda1)
-        self.assertEqual(eigenvalues[0] == lmbda2)
+        A, R, N, initer = Jacobi(3, 2, -1)
+        eig = np.diag(A)
+        lmbda1 = 1.0
+        lmbda2 = 3.0
+        epsilon = 1e-12
+        assert eig[1]-epsilon < lmbda1 < eig[1]+epsilon
+        assert eig[0]-epsilon < lmbda2 < eig[0]+epsilon
+        #self.assertEqual(eig[1], lmbda1)
+        #self.assertEqual(eig[0], lmbda2)
 """
  2c)
 Implement tests for:
