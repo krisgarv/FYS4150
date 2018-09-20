@@ -19,24 +19,22 @@ class Eigenvalues():
     # Functions needed for Jacobi's method:
     # Finding the largest value off the diagonal:
     def maxoffdiag(self, A):
+        k = 0
+        l = 1
         maxval = 0.0
-        for i in range(self.N-1):
-            for j in range(1, self.N):
+        for i in range(self.N):
+            for j in range(self.N):
                 if i != j:
-                    Aij = abs(A[i,j])
+                    Aij = float(np.abs(A[i,j]))
                     if Aij > maxval:
                         maxval = Aij
                         k = i
                         l = j
-                    else:
-                        # Default
-                        k = 1
-                        l = 1
-        return maxval, k, l
+        return maxval, l, k
 
     # Defining the rotation matrix
-    def rotate(self, A, R, k, l):
-        if A[l,k] != 0.0 :
+    def rotate(self, A, R, l, k):
+        if A[k, l] != 0.0 :
             tau = (A[l,l] - A[k,k])/(2.0*A[k,l])
             if tau > 0 :
                 t = 1.0/(tau + np.sqrt(1.0 + tau**2))
@@ -69,17 +67,17 @@ class Eigenvalues():
 
 
     # Jacobi's method:
-    def Jacobi(self): #(self.N, self.d, self.a)):
-        A = self.M#self.N, self.d, self.a)
+    def Jacobi(self):
+        A = self.M
         # Creating a identity matrix:
         R = np.identity(self.N)
         # Initial input for Jacobi's method:
-        max_offdiag, k, l = self.maxoffdiag(A) # initital max value off diagonal
+        max_offdiag, l, k = self.maxoffdiag(A) # initital max value off diagonal
         epsilon = 1.0e-8
         maxiter = float(self.N)**5  # maximum number of iterations
         initer = 0 # initial iteration value
         while (max_offdiag > epsilon and initer < maxiter):
-            max_offdiag, k, l = self.maxoffdiag(A)
+            max_offdiag, l, k = self.maxoffdiag(A)
             A, R = self.rotate(A, R, k, l)
             initer = initer + 1
         return A, R, initer
