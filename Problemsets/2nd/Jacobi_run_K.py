@@ -1,9 +1,9 @@
-from Jacobi_K import Eigenvalues as J
+from Jacobi_class_K import Eigenvalues as J
 import numpy as np
 import time
 
 # Hardcoded initial values for comparison with analytic and numpy solver
-N = 2
+N = 4
 h = 1.0/(N+1)
 d = (1.0/h**2)*2.0
 a = (1.0/h**2)*-1.0
@@ -36,3 +36,5 @@ print ("Time spendt by Jacobi's method, for a %dx%d matrix: %g"\
       %(N, N, time_jacobi))
 print ("Number of similarity transformations, for %dx%d matrix:\
    %d" % (N, N, Jacobi_iter))
+
+print(Jacobi_A)
