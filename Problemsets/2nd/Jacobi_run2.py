@@ -2,8 +2,9 @@ from Jacobi_class_K import Eigenvalues as J
 import numpy as np
 import time
 
-N = 10
-h = 1.0/(N+1)
+N = 3
+rho_max = 1.85
+h = float(rho_max)/N
 a = (1.0/h**2)*-1.0
 # Constructing d's for for the situation with adding the harmonic oscillator:
 di = np.zeros(N+1)
