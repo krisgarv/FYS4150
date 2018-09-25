@@ -1,4 +1,5 @@
-from Jacobi_class_K import Eigenvalues as J
+from Jacobi_class import Eigenvalues as J
+import scipy.linalg as sl
 import numpy as np
 import time
 
@@ -10,14 +11,30 @@ N = 10
 h = 1.0/(N+1)
 d = (1.0/h**2)*2.0
 a = (1.0/h**2)*-1.0
-# Calling the Jacobi module with initial values for buckling beam.
-i = J(N, d, a)
+# Creating the toeplitz matrix
+r = np.zeros(N)
+r[0] = d
+r[1] = a
+A = sl.toeplitz(r, r)
+
+#--------------------------------------------------------------------------
+
+# Function which calculates analytic solution:
+def analytic_eigenval(N, d, a):
+    lmbda = []
+    for i in range(1, N+1):
+        l = d + 2.0*a*np.cos((i*np.pi)/(N+1))
+        lmbda.append(l)
+    return lmbda
 
 #------------------------------------------------------------------------
 # Calculating solutions from Jacobi's method, Numpy's solver and analytic.
 
 # Analytic calculation:
-analytic = i.analytic_eigenval()
+analytic = analytic_eigenval(N, d, a)
+
+# Calling the Jacobi module with initial values for buckling beam.
+i = J(A)
 
 # Numpys solution:
 t0 = time.time()

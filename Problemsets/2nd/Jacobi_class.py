@@ -4,16 +4,9 @@ import unittest
 
 class Eigenvalues():
 
-    def __init__(self, N, d, a):
-        self.N = N
-        self.d = d
-        self.a = a
-        # Creating input arrays for toeplitz matrix:
-        r = np.zeros(self.N)
-        r[0] = self.d
-        r[1] = self.a
-        self.M = sl.toeplitz(r, r)
-
+    def __init__(self, A):
+        self.N = len(A[0, :])
+        self.M = A
 
 #---------------------------------------------------------------------
     # Functions needed for Jacobi's method:
@@ -88,14 +81,6 @@ class Eigenvalues():
     def nmpy_eigenval(self):
         A = self.M
         lmbda, eigenvec = np.linalg.eig(A)
-        return lmbda
-
-    # Function which calculates analytic solution:
-    def analytic_eigenval(self):
-        lmbda = []
-        for i in range(1, self.N+1):
-            l = self.d + 2.0*self.a*np.cos((i*np.pi)/(self.N+1))
-            lmbda.append(l)
         return lmbda
 
 #-------------------------------------------------------------------------
