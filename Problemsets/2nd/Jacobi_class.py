@@ -1,6 +1,5 @@
 import numpy as np
 import scipy.linalg as sl
-import unittest
 
 class Eigenvalues():
 
@@ -81,6 +80,6 @@ class Eigenvalues():
     def nmpy_eigenval(self):
         A = self.M
         lmbda, eigenvec = np.linalg.eig(A)
-        return lmbda
+        return lmbda, eigenvec
 
 #-------------------------------------------------------------------------

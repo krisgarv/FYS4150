@@ -4,18 +4,6 @@ import numpy as np
 import time
 
 #------------------------------------------------------------------------
-# Hardcoded initial values for harmonic oscillator with one electron.
-N = 10
-rho_max = 1.85
-h = float(rho_max)/N
-a = (1.0/h**2)*-1.0
-# Constructing d's for for the situation with adding the harmonic oscillator:
-di = np.zeros(N+1)
-for i in range(0,N):
-    di[i] = (2.0 + (i*h)**2)/h**2
-
-# ANALYTIC RESULTS FOR THE EIGENVALUES L = [3, 7, 11, 15, ...]
-# HVORDAN FINNE EN RHO SOM MATCHER?
 
 def run(N, a, di):
     # Creating the input matrix
@@ -30,12 +18,12 @@ def run(N, a, di):
 
     # Numpys solution:
     t0 = time.time()
-    numpy_lmbda = i.nmpy_eigenval()
+    Nlmbda, Nvec = i.nmpy_eigenval()
     t1 = time.time()
     time_numpy = t1 - t0
 
     # Sorting eigenvalues by size to simplify comparison.
-    NA = np.sort(numpy_lmbda)
+    NA = np.sort(Nlmbda)
 
     # Jacobi solution:
     t2 = time.time()
@@ -46,7 +34,26 @@ def run(N, a, di):
     # Sorting eigenvalues by size to simplify comparison.
     JA = np.sort(np.diag(Jacobi_A))
 
-    return Jacobi_A, numpy_lmbda time_jacobi, time_numpy
+    return A, JA, NA, Jacobi_iter, time_jacobi, time_numpy
+
+
+
+# Hardcoded initial values for harmonic oscillator with one electron.
+N = 4
+rho_max = 1.7
+h = float(rho_max)/N
+a = (1.0/h**2)*-1.0
+
+# Constructing d's for for the situation with adding the harmonic oscillator
+# with one electron:
+di = np.zeros(N)
+for i in range(N):
+    # rho_i = rho_0 + i*h = i*h
+    di[i] = (2.0 + (i*h)**2)/h**2
+A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
+
+# ANALYTIC RESULTS FOR THE EIGENVALUES L = [3, 7, 11, 15, ...]
+# HVORDAN FINNE EN RHO SOM MATCHER?
 
 
 # Print to commandline:

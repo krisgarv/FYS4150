@@ -4,7 +4,7 @@ OPPGAVER SOM MÅ GJØRES:
 
 1a)
 1) Show that an orthogonal or unitary transformation preserves the dot product and orthogonality:
-    -Lag en test i Jacobi_tests.py
+    -Lag en test i Jacobi_tests.py (ikke obligatorisk -> ikke prioritert!)
     -Teorien/Beviset er ført inn i rapporten
 1b)
 1) Write a function that implements Jacobis rotation algorithm:
@@ -20,13 +20,13 @@ OPPGAVER SOM MÅ GJØRES:
 - Er gjort i programmet, men ikke skrevet ned i rapport (Resultatdel).
 
 5) Comment (e.g. find the time needed for both algoritms for a given N):
-- Tiden er funnet i programmet, men ikke skrevet ned i rapport (Resultatdel).
-- Finn gjennomsnittstid for ulike N!
+- Tiden er funnet i programmet og skrevet ned i rapport (Resultatdel).
+- kommenter resultatet!
 
 
 1c)
 1) Implement tests (unit-tests):
-   - Mangler kun test for ortogonalitet
+   - Mangler kun test for ortogonalitet (nedprioritert!)
    - Må kommenteres i rapporten. (Resultatdel?)
 
 1d)
