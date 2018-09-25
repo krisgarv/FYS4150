@@ -1,11 +1,11 @@
-Denne tekstfilen må oppdateres jevnlig med alle oppgaver vi må gjøre, og spørsmålene vi kommer på underveis kan vi skrive opp. 
+Denne tekstfilen må oppdateres jevnlig med alle oppgaver vi må gjøre, og spørsmålene vi kommer på underveis kan vi skrive opp.
 
 OPPGAVER SOM MÅ GJØRES:
 
 1a)
 1) Show that an orthogonal or unitary transformation preserves the dot product and orthogonality:
-
-
+    -Lag en test i Jacobi_tests.py
+    -Teorien/Beviset er ført inn i rapporten
 1b)
 1) Write a function that implements Jacobis rotation algorithm:
 - Gjort i Jacobi_Class_K.py
@@ -14,25 +14,30 @@ OPPGAVER SOM MÅ GJØRES:
 - Ført inn i rapport. Ikke kommentert meget.
 
 3) Can you find a function for the number of transformations?:
-- Ført inn i rapport. 
+- Ført inn i rapport.
 
 4) Compare your result with the analytic eigenvalues:
-- Er vel gjort i programmet, men ikke skrevet ned i rapport.
+- Er gjort i programmet, men ikke skrevet ned i rapport (Resultatdel).
 
 5) Comment (e.g. find the time needed for both algoritms for a given N):
-- Tiden er vel funnet i programmet, men ikke skrevet ned i rapport.
-
+- Tiden er funnet i programmet, men ikke skrevet ned i rapport (Resultatdel).
+- Finn gjennomsnittstid for ulike N!
 
 
 1c)
 1) Implement tests (unit-tests):
-
+   - Mangler kun test for ortogonalitet
+   - Må kommenteres i rapporten. (Resultatdel?)
 
 1d)
+ - Før inn teori del i rapporten!!!
 1) Add harmonic oscillator potential to your tridiagonal Toeplitz matrix from 2a-2c, and diagonalize the matrix:
 
 - Her har jeg prøvd å redigere programmet Jacobi_Class_K.py for å få den til å fungere når diagonalen består av ulike tall. Eneste jeg har endret er i __init__.
-- Jeg har også skrevet litt i rapporten, men jeg er meget usikker på om det jeg har programmert og tenkt blir rett da jeg ikke klarer å velge en rho_max og få de eigenvalues som er nevnt i oppgaven (se spørsmålene under). 
+- Jeg har også skrevet litt i rapporten, men jeg er meget usikker på om det jeg har programmert og tenkt blir rett da jeg ikke klarer å velge en rho_max og få de eigenvalues som er nevnt i oppgaven (se spørsmålene under).
+
+- Klassen og kjøringsprogrammet virker, men vi må fortsatt finne riktig rho_max,
+  skal dette gjøres analytisk?
 
 2) Study your results as functions of N and your approximation to rho_max:
 
@@ -40,15 +45,15 @@ OPPGAVER SOM MÅ GJØRES:
 
 
 1e)
+ 1) Før inn teoridel i rapporten
 
 
-
-Rapport: 
+Rapport:
 - Skrive ned den relevante teorien om hvordan vi kom frem til programmene
-- 
+-
 
 
 SPØRSMÅL:
 
-- 1d) Hvordan skal egentlig matrisa her se ut? Skal diagonal-elementene være ulike, og ikke-diagonalene parvis like? (Silje) 
+- 1d) Hvordan skal egentlig matrisa her se ut? Skal diagonal-elementene være ulike, og ikke-diagonalene parvis like? (Silje)
 - 1d) Skal vi reprodusere lambda = 3, 7, 11 for N = 3 med en bestemt rho_max = rho_n? I så fall: Hvordan skal vi finne rho_max? (Silje)
