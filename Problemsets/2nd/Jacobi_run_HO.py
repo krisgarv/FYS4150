@@ -40,16 +40,16 @@ def run(N, a, di):
 
 # Hardcoded initial values for harmonic oscillator with one electron.
 N = 4
-rho_max = 1.7
+rho_max = 10
 h = float(rho_max)/N
-a = (1.0/h**2)*-1.0
+a = -1.0/h**2
 
 # Constructing d's for for the situation with adding the harmonic oscillator
 # with one electron:
 di = np.zeros(N)
 for i in range(N):
     # rho_i = rho_0 + i*h = i*h
-    di[i] = (2.0 + (i*h)**2)/h**2
+    di[i] = 2.0/h**2 + (i*h)**2
 A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
 
 # ANALYTIC RESULTS FOR THE EIGENVALUES L = [3, 7, 11, 15, ...]
