@@ -7,7 +7,7 @@ import time
 # The buckling beam:
 #------------------------------------------------------------------------
 # Hardcoded initial values for the buckling beam problem.
-N = 10
+N = 20
 h = 1.0/(N+1)
 d = (1.0/h**2)*2.0
 a = (1.0/h**2)*-1.0
@@ -38,7 +38,7 @@ i = J(A)
 
 # Numpys solution:
 t0 = time.time()
-numpy_lmbda = i.nmpy_eigenval()
+numpy_lmbda, numpy_eigvec = i.nmpy_eigenval()
 t1 = time.time()
 time_numpy = t1 - t0
 
@@ -57,6 +57,16 @@ JA = np.sort(np.diag(Jacobi_A))
 
 # Print to commandline:
 #------------------------------------------------------------------------
+with open('log.txt', 'a') as f:
+    f.write("Time spendt by numpys method, for a %dx%d matrix: %g \n" \
+          %(N, N, time_numpy))
+    f.write("Time spendt by Jacobi's method, for a %dx%d matrix: %g \n"\
+          %(N, N, time_jacobi))
+f.close()
+
+
+
+
 print ('SOLUTIONS FOR BUCKLING BEAM PROBLEM:')
 
 print("Eigenvalues obtained analytically: %a" %(analytic))

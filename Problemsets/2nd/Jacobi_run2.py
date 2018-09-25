@@ -1,4 +1,4 @@
-from Jacobi_class_K import Eigenvalues as J
+from Jacobi_class import Eigenvalues as J
 import numpy as np
 import time
 
