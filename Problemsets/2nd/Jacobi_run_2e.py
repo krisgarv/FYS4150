@@ -43,12 +43,11 @@ a = (1.0/h**2)*-1.0
 
 
 di = np.zeros(N+1)
-di[0] = 1/h**2
-omega = [0.01, 0.05, 1., 5.]
+di[0] = 2.0/h**2
+omega = [0.01, 0.5, 1., 5.]
 
 for j in omega:
     for i in range(1,N+1):
         di[i] = (2 + j**2*i**2*h**4 + h*(1./i))/h**2
 
     A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
-    
