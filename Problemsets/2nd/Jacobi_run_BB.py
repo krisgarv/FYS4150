@@ -7,15 +7,13 @@ import time
 # The buckling beam:
 #------------------------------------------------------------------------
 # Hardcoded initial values for the buckling beam problem.
-N = 20
+N = 4
 h = 1.0/(N+1)
-d = (1.0/h**2)*2.0
-a = (1.0/h**2)*-1.0
+d = 2.0/h**2
+a = -1.0/h**2
 # Creating the toeplitz matrix
-r = np.zeros(N)
-r[0] = d
-r[1] = a
-A = sl.toeplitz(r, r)
+A = np.zeros((N, N)) + np.diag(d*np.ones(N)) + np.diag(a*np.ones(N-1), k=1) +\
+    np.diag(a*np.ones(N-1), k=-1)
 
 #--------------------------------------------------------------------------
 
@@ -53,16 +51,6 @@ time_jacobi = t3 - t2
 
 # Sorting eigenvalues by size to simplify comparison.
 JA = np.sort(np.diag(Jacobi_A))
-
-
-# Print to commandline:
-#------------------------------------------------------------------------
-with open('log.txt', 'a') as f:
-    f.write("Time spendt by numpys method, for a %dx%d matrix: %g \n" \
-          %(N, N, time_numpy))
-    f.write("Time spendt by Jacobi's method, for a %dx%d matrix: %g \n"\
-          %(N, N, time_jacobi))
-f.close()
 
 
 
