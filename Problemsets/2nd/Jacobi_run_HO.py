@@ -36,8 +36,8 @@ def run(N, a, di):
 
 
 # Hardcoded initial values for harmonic oscillator.
-N = 4
-rho_max = 10
+N = 100
+rho_max = 9
 h = float(rho_max)/N
 a = -1.0/h**2
 
@@ -49,14 +49,16 @@ for i in range(N):
     d1i[i] = 2.0/h**2 + (i*h)**2
 A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, d1i)
 #print (A)
-
+print ("Eigenvalues obtained by Jacobi's method: %a" % (JA) )
+print ("Number of similarity transformations, for %dx%d matrix:\
+   %d" % (N, N, Jacobi_iter))
 
 # ANALYTIC RESULTS FOR THE EIGENVALUES L = [3, 7, 11, 15, ...]
 # HVORDAN FINNE EN RHO SOM MATCHER?
 
 # Constructing d's for for the situation with adding the harmonic oscillator
 # with two electrons:
-
+"""
 d2i = np.zeros(N)
 d2i[0] = 2.0/h**2
 omega = [0.01, 0.5, 1., 5.]
@@ -66,7 +68,7 @@ for j in omega:
     A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, d2i)
 
 
-
+"""
 """
 # Print to commandline:
 #------------------------------------------------------------------------
