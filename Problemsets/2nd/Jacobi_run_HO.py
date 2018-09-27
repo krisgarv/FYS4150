@@ -5,10 +5,10 @@ import time
 
 #------------------------------------------------------------------------
 
-def run(N, a, di):
+def run(N, a, d):
     # Creating the input matrix
-    A = np.zeros((N, N)) + np.diag(di) + np.diag(a*np.ones(N-1), k=1) +\
-        np.diag(a*np.ones(N-1), k=-1)
+    A = (np.zeros((N, N)) + np.diag(d*np.ones(N)) + \
+        np.diag(a*np.ones(N-1), k=1) + np.diag(a*np.ones(N-1), k=-1))
 
     # Calling the Jacobi module with initial values for buckling beam.
     i = J(A)
@@ -43,8 +43,8 @@ a = -1.0/h**2
 
 # Constructing d's for for the situation with adding the harmonic oscillator
 # with one electron:
-d1i = np.zeros(N+1)
-for i in range(N+1):
+d1i = np.zeros(N)
+for i in range(N):
     # rho_i = rho_0 + i*h = i*h
     d1i[i] = 2.0/h**2 + (i*h)**2
 A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, d1i)
@@ -56,11 +56,11 @@ A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, d1i)
 
 # Constructing d's for for the situation with adding the harmonic oscillator
 # with two electrons:
-d2i = np.zeros(N+1)
+d2i = np.zeros(N)
 d2i[0] = 1/h**2
 omega = [0.01, 0.05, 1., 5.]
 for j in omega:
-    for i in range(1,N+1):
+    for i in range(1,N):
         d2i[i] = (2 + j**2*i**2*h**4 + h*(1./i))/h**2
     A, JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, d2i)
 

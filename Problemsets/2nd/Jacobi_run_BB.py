@@ -12,8 +12,8 @@ h = 1.0/(N+1)
 d = 2.0/h**2
 a = -1.0/h**2
 # Creating the toeplitz matrix
-A = np.zeros((N, N)) + np.diag(d*np.ones(N)) + np.diag(a*np.ones(N-1), k=1) +\
-    np.diag(a*np.ones(N-1), k=-1)
+A = (np.zeros((N, N)) + np.diag(d*np.ones(N)) + np.diag(a*np.ones(N-1), k=1) +\
+    np.diag(a*np.ones(N-1), k=-1))
 
 #--------------------------------------------------------------------------
 
