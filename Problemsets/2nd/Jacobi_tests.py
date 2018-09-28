@@ -1,4 +1,4 @@
-from Jacobi_class_K import Eigenvalues as J
+from Jacobi_class import Eigenvalues as J
 import unittest
 import numpy as np
 
@@ -25,16 +25,3 @@ class MyTest(unittest.TestCase):
         self.assertAlmostEqual(eig[0], lmbda2, places=12)
 
     #def test_rotate(self):
-
-"""
- 2c)
-Implement tests for:
--the rotation function
-    is orthogonality preserverd?
--the maxoffdiag function
-    is maxval the largest one?
--the jacobi method
-    for a simple 2x2 matrix
-    correct eigenvalues?
--OTHER TESTS?
-"""

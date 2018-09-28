@@ -57,7 +57,6 @@ class Eigenvalues():
             R[i,l] = c*r_il + s*r_ik
         return A, R
 
-
     # Jacobi's method:
     def Jacobi(self):
         A = self.M

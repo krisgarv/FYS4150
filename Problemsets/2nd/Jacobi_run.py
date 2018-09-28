@@ -74,7 +74,7 @@ if P == 'BB':
     a = (-1.0/h**2)
     d = (2.0/h**2)
     di = d*np.ones(N)
-    analytic = analytic_eigenval(N, a, d)
+    analytic = analytic_eigenval(N, a, di)
     print ('SOLUTIONS FOR BUCKLING BEAM PROBLEM:')
     print("Eigenvalues obtained analytically: %a" %(analytic))
     if both == True:
@@ -108,7 +108,6 @@ if P == 'HO1':
         a = -1.0/h**2
         di = np.zeros(N)
         for i in range(N):
-            # rho_i = rho_0 + i*h = i*h
             di[i] = 2.0/h**2 + (i*h)**2
         print ('SOLUTIONS FOR HARMONIC OSCILLATOR IN THREE DIMENSIONS WITH ONE ELECTRON:')
         if both == True:
@@ -142,29 +141,34 @@ if P == 'HO2':
         a = -1.0/h**2
         di = np.zeros(N)
         di[0] = 1/h**2
-        omega = [0.01, 0.05, 1., 5.]
-        for j in omega:
-            for i in range(1,N):
-                di[i] = (2 + j**2*i**2*h**4 + h*(1./i))/h**2
+        omega = [0.01, 0.5, 1., 5.]
         print ('SOLUTIONS FOR HARMONIC OSCILLATOR IN THREE DIMENSIONS WITH TWO ELECTRONS:')
         if both == True:
-            JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
-            print("Eigenvalues obtained by library function from numpy: %a" \
-                %(NA))
-            print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
-                %(N, N, time_numpy))
-            print (' ')
-            print ("Eigenvalues obtained by Jacobi's method: %a" % (JA) )
-            print ("Time spendt by Jacobi's method, for a %dx%d matrix: %gs"\
-                %(N, N, time_jacobi))
-            print ("Number of similarity transformations, for %dx%d matrix:%d" \
-                % (N, N, Jacobi_iter))
+            for j in omega:
+                for i in range(1,N):
+                    di[i] = (2 + j**2*i**2*h**4 + h*(1./i))/h**2
+                JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
+                print('Omeaga = %f'%(j))
+                print("Eigenvalues obtained by library function from numpy: %a" \
+                    %(NA))
+                print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
+                    %(N, N, time_numpy))
+                print (' ')
+                print ("Eigenvalues obtained by Jacobi's method: %a" % (JA) )
+                print ("Time spendt by Jacobi's method, for a %dx%d matrix: %gs"\
+                    %(N, N, time_jacobi))
+                print ("Number of similarity transformations, for %dx%d matrix:%d" \
+                    % (N, N, Jacobi_iter))
         else:
-            NA, time_numpy = run(N, a, di)
-            print("Eigenvalues obtained by library function from numpy: %a" \
-                %(NA))
-            print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
-                %(N, N, time_numpy))
+            for j in omega:
+                for i in range(1,N):
+                    di[i] = (2 + j**2*i**2*h**4 + h*(1./i))/h**2
+                NA, time_numpy = run(N, a, di)
+                print('OMEGA = %f'%(j))
+                print("Eigenvalues obtained by library function from numpy: %a" \
+                    %(NA))
+                print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
+                    %(N, N, time_numpy))
     else:
         print('BAD USAGE! Initial value missing: rho_max.')
         print('Go to help page: python Jacobi_run.py --help')
