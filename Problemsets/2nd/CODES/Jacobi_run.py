@@ -53,36 +53,33 @@ def run(N, a, di):
     # The Numpy function in our module returns two elements:
     # Nlmbda is an array containing the eigenvalues of the input matrix.
     # Nvec is a matrix containing the eigenvectors of the input matrix.
-    Nlmbda, Nvec = i.nmpy_eigenval()
+    eigval_numpy, eigvec_numpy = i.nmpy_eigenval()
     t1 = time.time()
     # Taking the time of the calculation.
     time_numpy = t1 - t0
 
-    # Sorting eigenvalues by size to simplify comparison.
-    NA = np.sort(Nlmbda)
 
     # Jacobi's solution. Only computed if boolean variable -both is set to True.
     if both == True:
         # Jacobi solution:
         t2 = time.time()
         # The Jacobi function in our module retuns three elements:
-        # Jacobi_A contains eigenvalues on its diagonal.
-        # Jacobi_R contains eigenvectors.
+        # Jacobi_A, an array containing the eigenvalues.
+        # Jacobi_R is a matrix of eigenvectors.
         # Jacobi_iter is the number of rotaions necessary to make all
         # non-diagonal elements smaller epsilon = 1e-8
-        Jacobi_A, Jacobi_R, Jacobi_iter = i.Jacobi()
+        eigval_Jacobi, eigvec_Jacobi, iter_Jacobi = i.Jacobi()
         t3 = time.time()
         # Taking the time of the calculation.
         time_jacobi = t3 - t2
 
-        # Sorting eigenvalues by size to simplify comparison.
-        JA = np.sort(np.diag(Jacobi_A))
 
         # Returning results from both Jacobis and numpys method.
-        return  JA, NA, Jacobi_iter, time_jacobi, time_numpy
+        return  eigval_Jacobi, eigval_numpy, iter_Jacobi, \
+                time_jacobi, time_numpy
     else:
         # Returning results only from numpys method.
-        return NA, time_numpy
+        return eigval_numpy, time_numpy
 
 #-------------------------------------------------------------------------------
 # Function which calculates analytic solution for Buckling beam problem:
@@ -102,26 +99,26 @@ def printing(N, a, di):
     # Checking weather to calculate and print both Jacobis and Numpys solution.
     if both == True:
         # Results of both Jacobis and Numpys method are extracted from run function.
-        JA, NA, Jacobi_iter, time_jacobi, time_numpy = run(N, a, di)
+        eigval_Jacobi, eigval_numpy, iter_Jacobi, time_jacobi, time_numpy = run(N, a, di)
         # Printing to terminal.
         print("Eigenvalues obtained by library function from numpy: %a" \
-                %(NA))
+                %(eigval_numpy))
         print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
                 %(N, N, time_numpy))
         print (' ')
-        print ("Eigenvalues obtained by Jacobi's method: %a" % (JA) )
+        print ("Eigenvalues obtained by Jacobi's method: %a" % (eigval_Jacobi))
         print ("Time spendt by Jacobi's method, for a %dx%d matrix: %gs"\
             %(N, N, time_jacobi))
         print ("Number of similarity transformations, for %dx%d matrix:%d" \
-            % (N, N, Jacobi_iter))
+            % (N, N, iter_Jacobi))
     # Or calculating and printing only Numpys solutions.
     else:
         # Results of Numpys method are extracted from run function.
-        NA, time_numpy = run(N, a, di)
+        eigval_numpy, time_numpy = run(N, a, di)
         # Printing to terminal.
         print (' ')
         print("Eigenvalues obtained by library function from numpy: %a" \
-            %(NA))
+            %(eigval_numpy))
         print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
             %(N, N, time_numpy))
 
@@ -147,8 +144,7 @@ if P == 'BB':
 #-------------------------------------------------------------------------------
 # Harmonic oscillator in three dimensions, with one electron:
 #-------------------------------------------------------------------------------
-# Checking input string from command line:
-if P == 'HO1':
+elif P == 'HO1':
     #Initial matrix elements:
     h = float(rho_max)/N        # Step size
     a = -1.0/h**2               # Non-diagonal element, constant
@@ -164,7 +160,7 @@ if P == 'HO1':
 # Harmonic oscillator in three dimensions, with two electrons:
 #-------------------------------------------------------------------------------
 # Checking input string from command line:
-if P == 'HO2':
+elif P == 'HO2':
     #Initial matrix elements
     h = float(rho_max)/N        # Step size
     a = -1.0/h**2               # Non-diagonal element, constant
