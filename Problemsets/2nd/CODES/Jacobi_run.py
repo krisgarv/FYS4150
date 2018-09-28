@@ -22,7 +22,8 @@ pa.add_argument('-rho_max', type=float, default=5.0, help='Upper boundary \
 # Optional boolean variable, wheather to calculate eigenvalues with only Numpys
 # built-in method or also our slow Jacobi method, makes calculations for large
 # dimensionality possible.
-pa.add_argument('-both', action='store_true', default=False, help=' Boolean variable. \
+pa.add_argument('-both', type=bool, default=False, \
+        help=' Boolean variable. \
         If True: \
         Calculates eigenvalues using both numpys built in method and Jacobis \
         method. Default = False -> only computes by numpys \
@@ -88,7 +89,7 @@ def analytic_eigenval(N, a, d):
     # Storing eigenvalues to empty list
     for i in range(1, N+1):
         l = d + 2.0*a*np.cos((i*np.pi)/(N+1))
-    lmbda.append(l)
+        lmbda.append(l)
     # Returns list of analytic eigenvalues.
     return lmbda
 
@@ -101,6 +102,7 @@ def printing(N, a, di):
         # Results of both Jacobis and Numpys method are extracted from run function.
         eigval_Jacobi, eigval_numpy, iter_Jacobi, time_jacobi, time_numpy = run(N, a, di)
         # Printing to terminal.
+        print (' ')
         print("Eigenvalues obtained by library function from numpy: %a" \
                 %(eigval_numpy))
         print("Time spendt by numpys method, for a %dx%d matrix: %gs" \
@@ -133,7 +135,7 @@ if P == 'BB':
     d = (2.0/h**2)      # Diagonal element, constant
     di = d*np.ones(N)   # Create input array of diagonal elements
     # Solving Buckling beam problem analytically through function analytic_eigenval.
-    analytic = analytic_eigenval(N, a, di)
+    analytic = analytic_eigenval(N, a, d)
     # Printing header to terminal.
     print ('SOLUTIONS FOR BUCKLING BEAM PROBLEM:')
     # Printing analytic eigenvalues to terminal.
