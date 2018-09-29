@@ -2,15 +2,17 @@ from Jacobi_class import Eigenvalues as J
 import scipy.linalg as sl
 import numpy as np
 import time
+import sys
 
+#N = sys.argv[1]
+N = 4
+h = 1.0/(N+1)
+a = -1.0/h**2
 #---------------------------------------------------------------------------
 # The buckling beam:
 #------------------------------------------------------------------------
-# Hardcoded initial values for the buckling beam problem.
-N = 4
-h = 1.0/(N+1)
+# Initial values for the buckling beam problem.
 d = 2.0/h**2
-a = -1.0/h**2
 # Creating the toeplitz matrix
 A = (np.zeros((N, N)) + np.diag(d*np.ones(N)) + np.diag(a*np.ones(N-1), k=1) +\
     np.diag(a*np.ones(N-1), k=-1))
