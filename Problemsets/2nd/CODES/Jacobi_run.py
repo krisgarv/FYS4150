@@ -1,11 +1,20 @@
 # Importing necessary functionalities:
-from Jacobi_class import Eigenvalues as J
+from Jacobi import Eigenvalues as J
 import scipy.linalg as sl
 import numpy as np
 import time
 import sys
 import argparse
-#-------------------------------------------------------------------------------
+
+"""
+This script is made for solving the problems from Problem set 2 in FYS4150,
+fall 2018, and uses hardcoded initial values from this problem set.
+The dimensionality N, and which of the three problems to be solved must be
+given as command line arguments.
+In addition you can choose to change the upper boundary condition, rho_max for
+the quantum dot problems. The scripts runs only the numpy solver as default,
+as the Jacobi solver is very slow for large dimensions.
+"""
 # Collecting necessary input arguments from command line:
 pa = argparse.ArgumentParser(description='Run script for Jacobi method \
         to solve one of three spesific eigenvalue problems.')
@@ -22,7 +31,7 @@ pa.add_argument('-rho_max', type=float, default=5.0, help='Upper boundary \
 # Optional boolean variable, wheather to calculate eigenvalues with only Numpys
 # built-in method or also our slow Jacobi method, makes calculations for large
 # dimensionality possible.
-pa.add_argument('-both', type=bool, default=False, \
+pa.add_argument('-Jacobisolver', type=bool, default=False, \
         help=' Boolean variable. \
         If True: \
         Calculates eigenvalues using both numpys built in method and Jacobis \
@@ -33,7 +42,7 @@ arg = pa.parse_args()
 N = arg.N
 P = arg.Problem
 rho_max = arg.rho_max
-both = arg.both
+both = arg.Jacobisolver
 #-------------------------------------------------------------------------------
 # FUNCTIONS
 #-------------------------------------------------------------------------------
@@ -130,7 +139,7 @@ def printing(N, a, di):
 # Checking input string from command line:
 if P == 'BB':
     # Initial matrix elements
-    h = 1.0/(N+1)       # Step size
+    h = 1.0/(N+1)         # Step size
     a = (-1.0/h**2)     # Non-diagonal element, constant
     d = (2.0/h**2)      # Diagonal element, constant
     di = d*np.ones(N)   # Create input array of diagonal elements

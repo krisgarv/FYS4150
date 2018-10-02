@@ -155,14 +155,14 @@ class Eigenvalues():
             # see function maxoffdiag()
             max_offdiag, k, l = self.maxoffdiag(A)
             # counting transformations
-            transformstions = transformations + 1
+            transformations = transformations + 1
         # Extracting eigenvalues from the diagonal of the final A matrix
         # Sorting eigenvalues by size to simplify comparison.
         A_out = np.sort(np.diag(A))
         # Returning eigenvalues sorted from smallest to largest and stored in an
         # array. Returning the R matrix containing the eigenvectors and the
         # number of transformations performed.
-        return A_out, R, transformstions
+        return A_out, R, transformations
 
 #--------------------------------------------------------------------------
 
