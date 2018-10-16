@@ -2,18 +2,18 @@ import numpy as np
 
 class solver():
     def __init__(self, input_matrix, method, time_max, num_steps):
-        self.numbodies = dim(input_matrix(:, 0))
+        self.numbodies = len(input_matrix[:, 0])
         self.h = time_max/num_steps
-        self.mass = input_matrix(:, 0)
-        self.in_postition = input_matrix(:, [1, 3])
-        self.in_velocity = input_matrix(:, [4, 6])
+        self.mass = input_matrix[:, 0]
+        self.in_postition = input_matrix[:, 1:4]
+        self.in_velocity = input_matrix[:, 4:7]
         #initialize
         # ta fra hverandre input matrise
 
     def main():
         position = self.in_position
         velocity = self.in_velocity
-        out_position = np.empty(self.numbodies, 3, self.num_steps)
+        out_position = np.empty((self.numbodies, 3, self.num_steps))
         for i in range(num_steps):
             relposition = relative_position(self.numbodies, position)
             relforce = forces(self.numbodies, relposition, self.mass)
@@ -30,14 +30,14 @@ class solver():
         of all of the bodies.
         The output is a 3D matrix.
         """
-        relposition = np.zeros(self.numbodies, self.numbodies, 4)
+        relposition = np.zeros((self.numbodies, self.numbodies, 4))
         for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if(i != j):
-                    relposition[j,i,1] = position[j,1] - position[i,1] #position x-direction
-                    relposition[j,i,2] = position[j,2] - position[i,2] #position y-direction
-                    relposition[j,i,3] = position[j,3] - position[i,3] #position z-direction
-                    relposition[j,i,4] = np.sqrt(relposition[j,i,1]**2 + relposition[j,i,2]**2 + relposition[j,i,3]**2) #The absolute difference
+                    relposition[j,i,0] = position[j,0] - position[i,0] #position x-direction
+                    relposition[j,i,1] = position[j,1] - position[i,1] #position y-direction
+                    relposition[j,i,2] = position[j,2] - position[i,2] #position z-direction
+                    relposition[j,i,3] = np.sqrt(relposition[j,i,0]**2 + relposition[j,i,1]**2 + relposition[j,i,2]**2) #The absolute difference
         return relposition
 
     def forces(self, numbodies, relposition, mass):
