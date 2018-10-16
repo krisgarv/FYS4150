@@ -33,8 +33,8 @@ y_earth = output_matrix[1, 1, :]
 
 x = np.linspace(0, np.pi*2, numsteps+1)
 #plt.plot(x, KE)
-#plt.plot(x, PE)
-plt.plot(x, AM)
+plt.plot(x, PE+KE)
+#plt.plot(x, AM)
 plt.show()
 
 """

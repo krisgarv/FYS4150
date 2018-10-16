@@ -172,7 +172,7 @@ class solver():
         for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if (i != j):
-                    potential[i] = potential[i] + ((4*np.pi**2*self.mass[i]*self.mass[j])/relposition[j,i,3])
+                    potential[i] = potential[i] - ((4*np.pi**2*self.mass[i]*self.mass[j])/relposition[j,i,3])
             total_pe += potential[i]
         return total_pe
 
