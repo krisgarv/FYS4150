@@ -52,10 +52,10 @@ class solver():
         for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if (i != j):
-                    rrr = relposition[j,i,4]**3
+                    rrr = relposition[j,i,3]**3
+                    relforce[i,0] = relforce[i,0] - (fourpi2*self.mass[j]*relposition[j,i,0])/rrr
                     relforce[i,1] = relforce[i,1] - (fourpi2*self.mass[j]*relposition[j,i,1])/rrr
                     relforce[i,2] = relforce[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])/rrr
-                    relforce[i,3] = relforce[i,3] - (fourpi2*self.mass[j]*relposition[j,i,3])/rrr
         return relforce
 
     def calc_position(self, method, numbodies, position, velocity, relforce):
@@ -70,14 +70,14 @@ class solver():
 
         if self.method == 'Euler':
             for i in range(self.numbodies):
+                position[i,0] = position[i,0] + h*velocity[i,0]
                 position[i,1] = position[i,1] + h*velocity[i,1]
                 position[i,2] = position[i,2] + h*velocity[i,2]
-                position[i,3] = position[i,3] + h*velocity[i,3]
         elif self.method == 'Verlet':
             for i in range(self.numbodies):
+                position[i,0] = position[i,0] + h*velocity[i,0] + h205*relforce[i,0]
                 position[i,1] = position[i,1] + h*velocity[i,1] + h205*relforce[i,1]
                 position[i,2] = position[i,2] + h*velocity[i,2] + h205*relforce[i,2]
-                position[i,3] = position[i,3] + h*velocity[i,3] + h205*relforce[i,3]
             return position
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
@@ -90,21 +90,21 @@ class solver():
         2D updated force matrix, the value of tmax and the number of steps.
         The output is a 2D velocity matrix.
         """
-        velocity[0, :] = self.velocity
+        velocity[0, :] = self.velocity 
         h = self.h
         h05 = self.h/2.0
         if self.method == 'Euler':
             for i in range(self.numbodies):
+                velocity[i,0] = velocity[i,0] + h*relforce[i,0]
                 velocity[i,1] = velocity[i,1] + h*relforce[i,1]
                 velocity[i,2] = velocity[i,2] + h*relforce[i,2]
-                velocity[i,3] = velocity[i,3] + h*relforce[i,3]
             return velocity
 
         elif self.method == 'Verlet':
             for i in range(self.numbodies):
+                velocity[i,0] = velocity[i,0] + h05*(updatedforce[i,0] + relforce[i,0])
                 velocity[i,1] = velocity[i,1] + h05*(updatedforce[i,1] + relforce[i,1])
                 velocity[i,2] = velocity[i,2] + h05*(updatedforce[i,2] + relforce[i,2])
-                velocity[i,3] = velocity[i,3] + h05*(updatedforce[i,3] + relforce[i,3])
             return velocity
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
