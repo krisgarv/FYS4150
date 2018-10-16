@@ -1,15 +1,16 @@
 import numpy as np
 
 class solver():
-    def __init__(self, input_matrix, method, time_max, num_steps):
+    def __init__(self, input_matrix, method, time_max, numsteps):
         self.method = method
+        self.numsteps = numsteps
         self.numbodies = len(input_matrix[:, 0])
-        self.h = time_max/num_steps
+        self.h = time_max/numsteps
         self.mass = input_matrix[:, 0]
-        self.in_postition = input_matrix[:, 1:4]
+        self.in_position = input_matrix[:, 1:4]
         self.in_velocity = input_matrix[:, 4:7]
 
-    def main():
+    def main(self):
         # Creating an empty 3D matrix for the output positions
         out_position = np.empty((self.numbodies, 3, self.numsteps))
         # Initial position
@@ -26,13 +27,13 @@ class solver():
         # Calculating initial acceleration a_0
         prev_force = self.forces(relposition)
         # Looping over all time steps, calculating position
-        for i in range(1, num_steps):
+        for i in range(1, self.numsteps):
             # Updating position
             position = self.calc_position(position, velocity, prev_force)
             # Updating relative position
             relposition = self.relative_position(position)
             # Calculating next acceleration step
-            force = self.forces(position)
+            force = self.forces(relposition)
             # Updating velocity
             velocity = self.calc_velocities(velocity, force, prev_force)
             # Storing current acceleration step as previous for next velocity
@@ -70,7 +71,7 @@ class solver():
         """
 
         fourpi2 = 4*np.pi**2
-        relforce = np.zeros(self.numbodies,3)
+        relforce = np.zeros((self.numbodies,3))
         for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if (i != j):
@@ -98,9 +99,9 @@ class solver():
 
         elif self.method == 'verlet':
             for i in range(self.numbodies):
-                position[i,0] = position[i,0] + h*velocity[i,0] + h205*relforce[i,0]
-                position[i,1] = position[i,1] + h*velocity[i,1] + h205*relforce[i,1]
-                position[i,2] = position[i,2] + h*velocity[i,2] + h205*relforce[i,2]
+                position[i,0] = position[i,0] + h*velocity[i,0] - h205*relforce[i,0]
+                position[i,1] = position[i,1] + h*velocity[i,1] - h205*relforce[i,1]
+                position[i,2] = position[i,2] + h*velocity[i,2] - h205*relforce[i,2]
             return position
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
@@ -125,9 +126,9 @@ class solver():
 
         elif self.method == 'verlet':
             for i in range(self.numbodies):
-                velocity[i,0] = velocity[i,0] + h05*(prev_force[i,0] + relforce[i,0])
-                velocity[i,1] = velocity[i,1] + h05*(prev_force[i,1] + relforce[i,1])
-                velocity[i,2] = velocity[i,2] + h05*(prev_force[i,2] + relforce[i,2])
+                velocity[i,0] = velocity[i,0] - h05*(prev_force[i,0] - relforce[i,0])
+                velocity[i,1] = velocity[i,1] - h05*(prev_force[i,1] - relforce[i,1])
+                velocity[i,2] = velocity[i,2] - h05*(prev_force[i,2] - relforce[i,2])
             return velocity
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
