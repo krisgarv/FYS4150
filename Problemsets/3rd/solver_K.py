@@ -19,14 +19,20 @@ class solver():
         velocity = self.prev_velocity
         # Appending initial position to output matrix
         out_position[:,:,0] = position
-            #out_velocity = np.empty_like((out_position))
-            #out_velocity[:,:,0] = self.prev_velocity
         # Calculating initial relative position
         relposition = self.relative_position(position)
-            #prev_force = np.empty((numbodies, 3, self.numsteps))
         # Calculating initial acceleration a_0
         prev_force = self.forces(relposition)
-        # Looping over all time steps, calculating position
+
+        # Empty array for kinetic and potential energy and angular momentum
+        KE = np.empty(self.numsteps+1)
+        PE = np.empty(self.numsteps+1)
+        AM = np.empty(self.numsteps+1)
+        KE[0] = self.kinetic_energy(velocity)
+        PE[0] = self.potential_energy(relposition)
+        AM[0] = self.angular_momentum(relposition, velocity)
+        # Looping over all time steps, calculating position, energies and
+        # momentum
         for i in range(1, self.numsteps+1):
             # Updating position
             position = self.calc_position(position, velocity, prev_force)
@@ -41,10 +47,18 @@ class solver():
             prev_force = force
             # Storing position to output matrix
             out_position[:, :, i] = position
-                #out_velocity(:, :, i) = velocity
+            # Calculating kinetic energy, potential energy and angular momentum
+            KE[i] = self.kinetic_energy(velocity)
+            PE[i] = self.potential_energy(relposition)
+            AM[i] = self.angular_momentum(relposition, velocity)
             # Repeating over all time steps
         # Retuning 3D output matrix
-        return out_position
+        return out_position, KE, PE, AM
+
+
+
+
+
 
     def relative_position(self, position):
         """
@@ -79,7 +93,6 @@ class solver():
                     relforce[i,0] = relforce[i,0] - (fourpi2*self.mass[j]*relposition[j,i,0])/rrr
                     relforce[i,1] = relforce[i,1] - (fourpi2*self.mass[j]*relposition[j,i,1])/rrr
                     relforce[i,2] = relforce[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])/rrr
-        print (relforce[:, 0])
         return relforce
 
     def calc_position(self, prev_position, velocity, relforce):
@@ -133,50 +146,46 @@ class solver():
             return velocity
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
-"""
-    def kinetic_energy(self, numbodies, mass, velocity):
 
-#        This function calculates the kinetic energy.
-#        The input is the number of included bodies, a vector containing the masses of the bodies,
-#        a vector of kinetic energy and a 2D velocity matrix.
-#        The output is a kinetic energy vector.
-
-        kinetic=[]
-        totalke = 0
+    def kinetic_energy(self, velocity):
+        """
+        This function calculates the kinetic energy.
+        The input is the number of included bodies, a vector containing the masses of the bodies,
+        a vector of kinetic energy and a 2D velocity matrix.
+        The output is a kinetic energy vector.
+        """
+        kinetic = np.empty(self.numbodies)
+        total_ke = 0
         for i in range(self.numbodies):
-            kinetic[i] = 0.5*self.mass[i]*(velocity[i,1]**2 + velocity[i,2]**2 + velocity[i,3]**2)
+            kinetic[i] = 0.5*self.mass[i]*(velocity[i,0]**2 + velocity[i,1]**2 + velocity[i,2]**2)
             total_ke += kinetic[i]
-        kinetic.append(total_ke)
-        return kinetic
+        return total_ke
 
-    def potential_energy(self, numbodies, mass, relposition):
-
-#        This function calculate the potential energy.
-#        The input is the number of included bodies, a positional vector, a mass vector,
-#        and a 3D relative positional matrix.
-
-        potentital=[]
-        total_pe = 0  #np.zeros(numbodies+1)
+    def potential_energy(self, relposition):
+        """
+        This function calculate the potential energy.
+        The input is the number of included bodies, a positional vector, a mass vector,
+        and a 3D relative positional matrix.
+        """
+        potential = np.empty(self.numbodies)
+        total_pe = 0
         for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if (i != j):
-                    potential[i] = potential[i] + ((4*np.pi**2*self.mass[i]*self.mass[j])/relposition[j,i,4])
+                    potential[i] = potential[i] + ((4*np.pi**2*self.mass[i]*self.mass[j])/relposition[j,i,3])
             total_pe += potential[i]
-        potential.append(total_pe)
-        return potential
+        return total_pe
 
-    def angular_momentum(self, numbodies, mass, relposition, velocity):
-
-#        This function calculates the angular momentum.
-#        The input is the number of included bodies, a mass vector, a 3D relative position matrix,
-#        and a 2D velocity matrix.
-#        The output is a angular momentum vector.
-
-        angular=[]
+    def angular_momentum(self, relposition, velocity):
+        """
+        This function calculates the angular momentum.
+        The input is the number of included bodies, a mass vector, a 3D relative position matrix,
+        and a 2D velocity matrix.
+        The output is a angular momentum vector.
+        """
+        angular = np.empty(self.numbodies)
         total_ang = 0
         for i in range(self.numbodies):
-            angular[i] = self.mass[i]*relposition[1,i,4]*(np.squrt(velocity[i,1]**2 + velocity[i,2]**2 + velocity[i,3]**2))
+            angular[i] = self.mass[i]*relposition[0,i,3]*(np.sqrt(velocity[i,0]**2 + velocity[i,1]**2 + velocity[i,2]**2))
             total_ang += angular[i]
-        angular.append(total_ang)
-        return angular
-"""
+        return total_ang

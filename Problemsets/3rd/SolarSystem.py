@@ -13,6 +13,7 @@ velocity_sun = (0.0, 0.0, 0.0)
 velocity_earth = (0.0, 2*np.pi, 0.0)
 
 numbodies = 2
+numsteps = 100
 
 input_matrix = np.zeros((2, 7))
 input_matrix[0, 0] = mass_sun
@@ -21,15 +22,19 @@ input_matrix[0, 1:4] = position_sun
 input_matrix[1, 1:4] = position_earth
 input_matrix[0, 4:7] = velocity_sun
 input_matrix[1, 4:7] = velocity_earth
-print (input_matrix)
-sol = solver(input_matrix, 'verlet', 1, 100)
-output_matrix = sol.main()
-print (len(output_matrix[0, 0, :]))
+sol = solver(input_matrix, 'verlet', 1, numsteps)
+output_matrix, KE, PE, AM = sol.main()
 x_earth = output_matrix[1, 0, :]
 y_earth = output_matrix[1, 1, :]
 
-plt.plot(x_earth, y_earth)
-plt.axis('equal')
+#plt.plot(x_earth, y_earth)
+#plt.axis('equal')
+#plt.show()
+
+x = np.linspace(0, np.pi*2, numsteps+1)
+#plt.plot(x, KE)
+#plt.plot(x, PE)
+plt.plot(x, AM)
 plt.show()
 
 """
