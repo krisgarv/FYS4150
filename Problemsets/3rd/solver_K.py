@@ -3,7 +3,7 @@ import numpy as np
 class solver():
     def __init__(self, input_matrix, method, time_max, numsteps):
         self.method = method
-        self.numsteps = numsteps
+        self.numsteps = numsteps*time_max
         self.numbodies = len(input_matrix[:, 0])
         self.h = time_max/numsteps
         self.mass = input_matrix[:, 0]
@@ -53,7 +53,7 @@ class solver():
             AM[i] = self.angular_momentum(relposition, velocity)
             # Repeating over all time steps
         # Retuning 3D output matrix
-        return out_position, KE, PE, AM
+        return out_position #, KE, PE, AM
 
 
 
@@ -95,7 +95,7 @@ class solver():
                     relforce[i,2] = relforce[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])/rrr
         return relforce
 
-    def calc_position(self, prev_position, velocity, relforce):
+    def calc_position(self, prev_position, prev_velocity, prev_force):
         """
         This function calculate the position for the next timestep.
         The input is the number of included bodies, a 2D position matrix, a 2D velocity matrix,
@@ -107,21 +107,21 @@ class solver():
         position = np.zeros((self.numbodies, 3))
         if self.method == 'euler':
             for i in range(self.numbodies):
-                position[i,0] = prev_position[i,0] + h*velocity[i,0]
-                position[i,1] = prev_position[i,1] + h*velocity[i,1]
-                position[i,2] = prev_position[i,2] + h*velocity[i,2]
+                position[i,0] = prev_position[i,0] + h*prev_velocity[i,0]
+                position[i,1] = prev_position[i,1] + h*prev_velocity[i,1]
+                position[i,2] = prev_position[i,2] + h*prev_velocity[i,2]
             return position
         elif self.method == 'verlet':
             for i in range(self.numbodies):
-                position[i,0] = prev_position[i,0] + h*velocity[i,0] + h205*relforce[i,0]
-                position[i,1] = prev_position[i,1] + h*velocity[i,1] + h205*relforce[i,1]
-                position[i,2] = prev_position[i,2] + h*velocity[i,2] + h205*relforce[i,2]
+                position[i,0] = prev_position[i,0] + h*prev_velocity[i,0] + h205*prev_force[i,0]
+                position[i,1] = prev_position[i,1] + h*prev_velocity[i,1] + h205*prev_force[i,1]
+                position[i,2] = prev_position[i,2] + h*prev_velocity[i,2] + h205*prev_force[i,2]
             return position
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
 
 
-    def calc_velocities(self, prev_velocity, relforce, prev_force):
+    def calc_velocities(self, prev_velocity, force, prev_force):
         """
         This function calculates the velocity.
         The input is the number of included bodies, a 2D velocity matrix, a 2D relative force matrix,
@@ -133,16 +133,16 @@ class solver():
         velocity = np.zeros((self.numbodies, 3))
         if self.method == 'euler':
             for i in range(self.numbodies):
-                velocity[i,0] = prev_velocity[i,0] + h*relforce[i,0]
-                velocity[i,1] = prev_velocity[i,1] + h*relforce[i,1]
-                velocity[i,2] = prev_velocity[i,2] + h*relforce[i,2]
+                velocity[i,0] = prev_velocity[i,0] + h*prev_force[i,0]
+                velocity[i,1] = prev_velocity[i,1] + h*prev_force[i,1]
+                velocity[i,2] = prev_velocity[i,2] + h*prev_force[i,2]
             return velocity
 
         elif self.method == 'verlet':
             for i in range(self.numbodies):
-                velocity[i,0] = prev_velocity[i,0] + h05*(prev_force[i,0] + relforce[i,0])
-                velocity[i,1] = prev_velocity[i,1] + h05*(prev_force[i,1] + relforce[i,1])
-                velocity[i,2] = prev_velocity[i,2] + h05*(prev_force[i,2] + relforce[i,2])
+                velocity[i,0] = prev_velocity[i,0] + h05*(prev_force[i,0] + force[i,0])
+                velocity[i,1] = prev_velocity[i,1] + h05*(prev_force[i,1] + force[i,1])
+                velocity[i,2] = prev_velocity[i,2] + h05*(prev_force[i,2] + force[i,2])
             return velocity
         else:
             print('Please state which method you want to use; Euler or Verlet(rocommended)')
