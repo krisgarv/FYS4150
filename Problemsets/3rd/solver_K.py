@@ -53,7 +53,7 @@ class solver():
             AM[i] = self.angular_momentum(relposition, velocity)
             # Repeating over all time steps
         # Retuning 3D output matrix
-        return out_position #, KE, PE, AM
+        return out_position, KE, PE, AM
 
 
 
