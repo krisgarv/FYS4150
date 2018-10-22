@@ -5,7 +5,7 @@ class solver():
         self.method = method
         self.numsteps = numsteps*time_max
         self.numbodies = len(input_matrix[:, 0])
-        self.h = time_max/numsteps
+        self.h = 1.0/numsteps
         self.mass = input_matrix[:, 0]
         self.prev_position = input_matrix[:, 1:4]
         self.prev_velocity = input_matrix[:, 4:7]
@@ -189,3 +189,6 @@ class solver():
             angular[i] = self.mass[i]*relposition[0,i,3]*(np.sqrt(velocity[i,0]**2 + velocity[i,1]**2 + velocity[i,2]**2))
             total_ang += angular[i]
         return total_ang
+
+if __name__=='__main__':
+    main()
