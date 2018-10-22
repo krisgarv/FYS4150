@@ -80,7 +80,7 @@ class solar_system(object):
         # Creating a empty matrix to store the objects data
         input_matrix = np.empty((len(self.objects), 7))
         # Reading inital values from the data file, creating the input matrix
-        data = open('planets_distancespeed.txt', 'r')
+        data = open('planets_data.txt', 'r')
         # Using loops and regular expressions to achieve the data from file
         i = 0
         legend = []
@@ -136,6 +136,7 @@ class solar_system(object):
             numerator += matrix[i, 0]*matrix[i, 1:4]*matrix[i, 4:7]
             #(matrix[i, 0]*matrix[i, 1:4]*matrix[i, 4:7])/(matrix[0, 0]*matrix[0, 1:4])
         matrix[0, 4:7] = numerator/(matrix[0, 0]*matrix[0, 1:4])
+        print(matrix[0, 4:7])
         #sum(matrix[1:, 0]*matrix[1:, 1:4]*matrix[1:, 4:7])/(matrix[0, 0]*matrix[0, 1:4])
         return matrix
 
