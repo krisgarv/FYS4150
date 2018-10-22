@@ -23,43 +23,43 @@ input_matrix[0, 4:7] = velocity_sun
 input_matrix[1, 4:7] = velocity_earth
 
 #----------------------------------------------------------------------------
-def euler_or_verlet():
-    numsteps = [1000000, 100000, 10000, 1000, 100, 50]
-    time_max = 1
+def euler_or_verlet(method):
+
+    time_max = 4
     legend=[]
+    if method == 'euler':
+        numsteps = [1000000, 100000, 10000, 1000, 100, 50]
+        for num in numsteps:
+            euler = solver(input_matrix, 'euler', time_max, num)
+            output_euler, KE, PE, AM = euler.main()
+            xEe = output_euler[1, 0, :]
+            yEe = output_euler[1, 1, :]
+            plt.figure(figsize=(10, 10))
+            plt.plot(xEe, yEe)
+            legend.append(str(num))
 
-    for num in numsteps:
-        euler = solver(input_matrix, 'euler', time_max, num)
-        verlet = solver(input_matrix, 'verlet', time_max, num)
-
-        output_euler = euler.main()
-        xEe = output_euler[1, 0, :]
-        yEe = output_euler[1, 1, :]
-
-        output_verlet = verlet.main()
-        xVe = output_verlet[1, 0, :]
-        yVe = output_verlet[1, 1, :]
-
-    if num == numsteps[0]:
-        plt.figure(1, figsize=(10, 10))
-        plt.plot(xEe, yEe, 'y')
-        plt.figure(2, figsize=(10, 10))
-        plt.plot(xVe, yVe, 'y')
-    else:
-        plt.figure(1)
-        plt.plot(xEe, yEe)
-        plt.figure(2)
-        plt.plot(xVe, yVe)
-
-        legend.append(str(num))
-    for i in range(1, 3):
-        plt.figure(i)
-        plt.xlabel('x [AU]\n %i year(s)' %(time_max))
-        plt.ylabel('y [AU]')
-        plt.title("Earth's orbit around the Sun (in origo)")
-        plt.legend(legend, loc=2, fontsize='small')
-        plt.axis('equal')
+    elif method == 'verlet':
+        numsteps = [1000]
+        for num in numsteps:
+            verlet = solver(input_matrix, 'verlet', time_max, num)
+            output_verlet, KE, PE, AM = verlet.main()
+            xVe = output_verlet[1, 0, :]
+            yVe = output_verlet[1, 1, :]
+            plt.figure(figsize=(10, 10))
+            plt.plot(xVe, yVe)
+            legend.append(str(num))
+    plt.xlabel('x [AU]\n %i year(s)' %(time_max))
+    plt.ylabel('y [AU]')
+    plt.title("Earth's orbit around the Sun (in origo)")
+    plt.legend(legend, loc=2, fontsize='small')
+    plt.axis('equal')
     plt.show()
+
+#euler_or_verlet('verlet')
+
+
+
+
 
 #------------------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ def energies():
     verlet  = solver(input_matrix, 'verlet', time_max, numsteps)
     output_matrix, KE, PE, AM = verlet.main()
     x = np.linspace(0, 1, numsteps+1)
-    
+
     plt.figure(1, figsize=(10, 10))
     plt.plot(x, KE)
     plt.suptitle('Total kinetic energy in the Earth-Sun system.', fontsize=24)
@@ -106,3 +106,14 @@ def energies():
     plt.ylabel('energy [AU²*kg/yr²]', fontsize=16)
     plt.legend(['PE', 'KE', 'KE+PE'])
     plt.show()
+
+
+def analyze_AM():
+    time_max = 1
+    numsteps = 10000
+    verlet  = solver(input_matrix, 'verlet', time_max, numsteps)
+    output_matrix, KE, PE, AM = verlet.main()
+    diff = max(KE) - min(KE)
+    return diff
+
+print(analyze_AM())

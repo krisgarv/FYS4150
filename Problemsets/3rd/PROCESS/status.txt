@@ -1,0 +1,82 @@
+PROBLEM SET 3
+
+- Før inn målet med oppgaven i introduksjonen
+- Før inn teori om velocity Verlet og Eulers metode
+
+
+3a) (-> Metode)
+- Discretize the differential equations
+- Set up an algorithm for solving these equations using Euler’s forward algorithm
+- and the so-called velocity Verlet method.
+
+
+3b)(->Metode - Implementation)
+-Write a program which solves the differential equations for the
+Earth-Sun system
+-using Euler’s method
+-and the velocity Verlet method
+
+
+3c) (-> Resultat)
+-Find out which initial value for the velocity that gives a circular orbit
+-test the stability of your algorithm as function of different time steps ∆t.
+-Make a plot of the results you obtain for the position of the Earth orbiting
+the Sun
+-Check for the case of a circular orbit that both the kinetic and the potential
+energies are conserved.
+-Check if the angular momentum is conserved.
+-Explain why these quantities should be conserved. (->Metode)
+-Discuss eventual differences between the Verlet algorithm and the Euler algorithm.
+(-> Metode)
+-Consider the number of FLOPs involved
+-perform a timing of the two algorithms for equal final times.
+
+
+! USE VELOCITY VERLET IN THE REMAINING PART OF THE PROJECT!
+
+3d) (-> Metode & Resultat)
+-Find out by trial and error what the initial velocity must be in order for the
+planet to escape from the sun.
+- Can you find an exact answer?
+-How does that match your numerical results?
+-Change the gravitational force: What happens to the earth-sun system when β
+creeps towards 3?
+
+3e)
+The aim here is to find out how much Jupiter alters the Earth’s motion.
+-Modify program by adding the magnitude of the force between the Earth and Jupiter.
+-Modify your first-order differential equations in order to accomodate both the
+motion of the Earth and Jupiter.
+-Set up the algorithm
+-plot the positions of the Earth and Jupiter using the velocity Verlet algorithm
+-Discuss the stability of the solutions using your Verlet solver.
+-Repeat the calculations by increasing the mass of Jupiter by a factor of 10
+-Repeat the calculations by increasing the mass of Jupiter by a factor of 1000
+-Plot the position of the Earth.
+-Study again the stability of the Verlet solver.
+
+3f)
+-carry out a real three-body calculation where all three systems are in motion
+-Give the Sun an initial velocity which makes the total momentum of the system
+exactly zero.
+-Compare these results with those from the previous exercise and comment your
+results.
+-Extend your program to include all planets in the solar system, discuss results
+- Use the above NASA's data to set up the initial positions and velocities for
+all planets.
+
+3g)
+-Run a simulation over one century of Mercury’s orbit around the Sun with no
+other planets present
+-Check the value of the perihelion angle θp.
+-Make sure that the time resolution used in your simulation is sufficient,
+e.g. check that the perihelion precession you get with a pure Newtonian force
+is at least a few orders of magnitude smalle than the observed perihelion
+precession of Mercury
+-Can the observed perihelion precession of Mercury be explained by the general
+theory of relativity?
+
+
+Also)
+-Make unit tests!
+ 
