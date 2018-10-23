@@ -102,17 +102,6 @@ def euler_or_verlet(method, numsteps, plot=False):
         plt.axis('equal')
         plt.show()
 
-
-def energies():
-    plt.figure(figsize=(10, 10))
-    plt.plot(x, PE, x, KE, x, KE+PE)
-    plt.suptitle('Total energy in the Earth-Sun system.', fontsize=24)
-    plt.xlabel('time [yr]', fontsize=16)
-    plt.ylabel('energy [AU²*kg/yr²]', fontsize=16)
-    plt.legend(['PE', 'KE', 'KE+PE'])
-    plt.show()
-
-
 """-----------------------------------------------------------------------------
 Running the script:
 -----------------------------------------------------------------------------"""
