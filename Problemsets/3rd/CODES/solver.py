@@ -164,9 +164,9 @@ class solver():
                 if (i != j):
                     rr = relposition[j,i,3]**2
                     # Correction
-                    corr_x = 1+3*l**2/(relposition[j, i, 0]**2*c**2)
-                    corr_y = 1+3*l**2/(relposition[j, i, 1]**2*c**2)
-                    corr_z = 1+3*l**2/(relposition[j, i, 2]**2*c**2)
+                    corr_x = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
+                    corr_y = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
+                    corr_z = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
                     ac[i,0] = ac[i,0] - (fourpi2*self.mass[j]*relposition[j,i,0]*corr_x)/rr
                     ac[i,1] = ac[i,1] - (fourpi2*self.mass[j]*relposition[j,i,1]*corr_y)/rr
                     ac[i,2] = ac[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])*corr_z/rr

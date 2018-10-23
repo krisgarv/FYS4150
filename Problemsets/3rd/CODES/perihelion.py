@@ -29,6 +29,13 @@ xM = out_position[1, 0, :]
 yM = out_position[1, 1, :]
 zM = out_position[1, 2, :]
 
+sol2 = solver(input_matrix, 'verlet', time_max, num_steps)
+out_position, KE, PE, AM = sol2.main()
+xM2 = out_position[1, 0, :]
+yM2 = out_position[1, 1, :]
+plt.plot(xM, yM, xM2, yM2)
+plt.show()
+"""
 # Initializing the figure
 fig = plt.figure(figsize=(10, 10))
 ax = fig.gca(projection='3d')
@@ -40,5 +47,6 @@ ax.set_zlabel('z [AU]', fontsize=16)
 ax.set_title('The solar system. \n %d years from Sep. 18 2018' \
 %(self.t), fontsize=20)
 ax.legend(legend, loc=2, fontsize='small')
+"""
 plt.axis('equal')
 plt.show
