@@ -55,9 +55,10 @@ for i in range(1, num_steps):
     u[i] = u[i-1] + h05*(ax[i-1] + ax[i])
     v[i] = v[i-1] + h05*(ay[i-1] + ay[i])
 
+log = open('perihelion_log.txt', 'a')
 for i in range(num_steps):
     if r[i] < r[i-1] and r[i] < r[i+1]:
-        print(x[i], y[i])
+        log.write(x[i], y[i])
 
 """
 plt.figure(figsize=(10, 10))

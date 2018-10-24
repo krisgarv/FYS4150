@@ -10,7 +10,7 @@ class solver():
     well as arrays containing the development of potential and kinetic energy
     and angular momentum as functions of time.
     """
-    def __init__(self, input_matrix, method, time_max, numsteps, CM=True):
+    def __init__(self, input_matrix, method, time_max, numsteps):
         """
         The method takes an input matrix where the initial mass, position and
         velocity of each object in a system is stored as the row vectors of the
@@ -31,10 +31,6 @@ class solver():
         # Initial positions and velocities extracted from the input matrix
         self.prev_position = input_matrix[:, 1:4]
         self.prev_velocity = input_matrix[:, 4:7]
-        # If True (default), center of mass is fixed in origo.
-        # If false, the first input object is fixed in its initial point in space.
-        # If the first object is the Sun, all other objects orbit around the Sun in origo.
-        self.CM = CM
 
     def main(self):
         """
@@ -116,16 +112,7 @@ class solver():
         fourpi2 = 4*np.pi**2
         # Empty matrix for the acceleration
         ac = np.zeros((self.numbodies,3))
-        # Fixing the position of the Sun to origo by not allowing it to accelerate
-        # If the Center of mass is to be calculated along with the initial velocity
-        # the Sun is allowed to accelerate to get the new position relative to the
-        # center of mass wich is fixed in origo.
-        if self.CM == True:
-            f=0
-        else:
-            ac[0, 0] = 0.0
-            f=1
-        for i in range(f, self.numbodies):
+        for i in range(self.numbodies):
             for j in range(self.numbodies):
                 if (i != j):
                     rrr = relposition[j,i,3]**3
