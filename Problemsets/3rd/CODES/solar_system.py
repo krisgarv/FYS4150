@@ -172,6 +172,7 @@ class solar_system(object):
         plt.title('The solar system. \n %d years from Sep. 18 2018' %(self.t),\
         fontsize=24)
         plt.legend(legend, loc=2, fontsize='small')
+        plt.grid(True)
         plt.axis('equal')
 
     def plot_3D(self, position, legend):
@@ -194,7 +195,6 @@ class solar_system(object):
         %(self.t), fontsize=24)
         ax.legend(legend, loc=2, fontsize='small')
         plt.axis('equal')
-
 
     def potential_energy(self, PE):
         """

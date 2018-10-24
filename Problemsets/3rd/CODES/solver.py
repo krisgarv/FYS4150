@@ -10,7 +10,7 @@ class solver():
     well as arrays containing the development of potential and kinetic energy
     and angular momentum as functions of time.
     """
-    def __init__(self, input_matrix, method, time_max, numsteps, perihelion=False):
+    def __init__(self, input_matrix, method, time_max, numsteps):
         """
         The method takes an input matrix where the initial mass, position and
         velocity of each object in a system is stored as the row vectors of the
@@ -31,7 +31,6 @@ class solver():
         # Initial positions and velocities extracted from the input matrix
         self.prev_position = input_matrix[:, 1:4]
         self.prev_velocity = input_matrix[:, 4:7]
-        self.perihelion = perihelion
 
     def main(self):
         """
@@ -48,14 +47,8 @@ class solver():
         out_position[:,:,0] = position
         # Calculating initial relative position
         relposition = self.relative_position(position)
-        # If the program is user to evaluate the specific problem with
-        # mercurys perihelion, the acceleration is altered
-        if self.perihelion == True:
-            # Calculating initial acceleration a_0
-            prev_ac = self.ac_mercury(relposition, velocity)
-        else:
-            # Calculating initial acceleration a_0
-            prev_ac = self.acceleration(relposition)
+        # Calculating initial acceleration a_0
+        prev_ac = self.acceleration(relposition)
         # Empty array for kinetic and potential energy and angular momentum
         KE = np.empty(self.numsteps+1)
         PE = np.empty(self.numsteps+1)
@@ -71,14 +64,8 @@ class solver():
             position = self.calc_position(position, velocity, prev_ac)
             # Updating relative position
             relposition = self.relative_position(position)
-            # If the program is user to evaluate the specific problem with
-            # mercurys perihelion, the acceleration is altered
-            if self.perihelion == True:
-                # Calculating next acceleration step
-                ac = self.ac_mercury(relposition, velocity)
-            else:
-                # Calculating next acceleration step
-                ac = self.acceleration(relposition)
+            # Calculating next acceleration step
+            ac = self.acceleration(relposition)
             # Updating velocity
             velocity = self.calc_velocities(velocity, ac, prev_ac)
             # Storing current acceleration step as previous for next velocity
@@ -143,35 +130,6 @@ class solver():
                     ac[i,2] = ac[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])/rbeta
                     """
         return ac
-
-    def ac_mercury(self, relposition, velocity):
-        """
-        Modifying the acceleration to evaluate the perihelion of Mercury
-        problem 3.g):
-        Run through the script perihelion.py
-        """
-        # Initializing to avoid repetative FLOPS
-        fourpi2 = 4*np.pi**2
-        # The magnitude of Mercury's orbital angular momentum
-        l = abs(relposition[0,1,3])*(np.sqrt(velocity[1,0]**2 + velocity[1,1]**2 + velocity[1,2]**2))
-        # The speed of light in vacuum
-        #(299792458 × 60 × 60 × 24 / 149597870700) AU/day
-        c = 299792458*60*60*24*365/149597870700 # [AU/yr]
-        # Empty matrix for the acceleration
-        ac = np.zeros((self.numbodies,3))
-        for i in range(self.numbodies):
-            for j in range(self.numbodies):
-                if (i != j):
-                    rr = relposition[j,i,3]**2
-                    # Correction
-                    corr_x = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
-                    corr_y = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
-                    corr_z = 1+3*l**2/(relposition[j, i, 3]**2*c**2)
-                    ac[i,0] = ac[i,0] - (fourpi2*self.mass[j]*relposition[j,i,0]*corr_x)/rr
-                    ac[i,1] = ac[i,1] - (fourpi2*self.mass[j]*relposition[j,i,1]*corr_y)/rr
-                    ac[i,2] = ac[i,2] - (fourpi2*self.mass[j]*relposition[j,i,2])*corr_z/rr
-        return ac
-
 
     def calc_position(self, prev_position, prev_velocity, prev_ac):
         """
@@ -265,3 +223,6 @@ class solver():
             angular[i] = self.mass[i]*relposition[0,i,3]*(np.sqrt(velocity[i,0]**2 + velocity[i,1]**2 + velocity[i,2]**2))
             total_ang += angular[i]
         return total_ang
+
+if __name__ == '__main__':
+    main()
