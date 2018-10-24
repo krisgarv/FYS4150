@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 """
-In this script we study the orbit of Mercury
+In this script we study the orbit of Mercury in two dimensions. The aim is to
+find the perihelion precission
 """
 
 
@@ -54,7 +55,7 @@ for i in range(1, num_steps):
     u[i] = u[i-1] + h05*(ax[i-1] + ax[i])
     v[i] = v[i-1] + h05*(ay[i-1] + ay[i])
 
-for i in r:
+for i in range(num_steps):
     if r[i] < r[i-1] and r[i] < r[i+1]:
         print(x[i], y[i])
 

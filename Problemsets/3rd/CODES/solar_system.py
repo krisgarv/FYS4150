@@ -61,11 +61,11 @@ class solar_system(object):
         # function
         input_matrix, legend = self.input_data()
         # Adjusting the input matrix if origo is to be set at the center of mass
-        # instead of center of the Sun
+        # instead of center of initial origo
         if self.CM is True:
             input_matrix = self.center_of_mass(input_matrix)
         # Inintialiszing the solver method with the selected input
-        I = solver(input_matrix, self.method, self.t, self.N)
+        I = solver(input_matrix, self.method, self.t, self.N, self.CM)
         # Running the solver, extracting a position matrix and arrays conatining
         # information on the energies and angular momentum of the system
         output_matrix, KE, PE, AM = I.main()
