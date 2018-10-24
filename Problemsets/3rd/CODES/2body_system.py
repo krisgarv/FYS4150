@@ -118,3 +118,7 @@ the accuracy of the calculations."""
 
 euler_or_verlet('euler', [1000000, 100000, 10000, 1000, 100, 50], plot=True)
 euler_or_verlet('verlet', [1000, 500, 100, 50], plot=True)
+
+"""Plotting a simple plot of the Earths orbit around the Sun, used in the report"""
+
+euler_or_verlet('verlet', [1000], plot=True)

@@ -5,12 +5,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import argparse
 import re
 
-"""
-Other programs?
-    - Plot the position of the earth as function of integration steps for each Method
-    - Plot the kinetic, potential, total energy and angular momentum
-    - Calculate the diversion of angular momentum throughout one year run
-"""
 class solar_system(object):
 
     """
@@ -20,7 +14,9 @@ class solar_system(object):
     method to integate Newtons law of gravitation. This operation is done by the
     solver method found in solver.py. \n
     Finally the method plot the positions of the selected objects in 2 or 3
-    dimensions.
+    dimensions.\n
+    The method has additional functions to plot the kinetic, potential or total
+    energy or angular momentum of the system. 
     """
     def __init__(self, objects, dimension, time_max, num_steps, \
     CM, method, plot_energies):
@@ -65,7 +61,7 @@ class solar_system(object):
         if self.CM is True:
             input_matrix = self.center_of_mass(input_matrix)
         # Inintialiszing the solver method with the selected input
-        I = solver(input_matrix, self.method, self.t, self.N, self.CM)
+        I = solver(input_matrix, self.method, self.t, self.N)
         # Running the solver, extracting a position matrix and arrays conatining
         # information on the energies and angular momentum of the system
         output_matrix, KE, PE, AM = I.main()
