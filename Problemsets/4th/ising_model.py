@@ -26,30 +26,31 @@ def MC(spin_matrix, num_cycles, temperature):
 
     E, M = initial_energy(spin_matrix, num_spins, temperature)
 
-    for i in range(1, num_cycles):
-        ix = np.random.randint(num_spins)
-        iy = np.random.randint(num_spins)
+    for i in range(1, num_cycles+1):
+        for j in range(num_spins*num_spins):
+            ix = np.random.randint(num_spins)
+            iy = np.random.randint(num_spins)
 
-        left = spin_matrix[ix - 1, iy] if ix > 0 else spin_matrix[num_spins - 1, iy]
-        right = spin_matrix[ix + 1, iy] if ix < (num_spins - 1) else spin_matrix[0, iy]
+            left = spin_matrix[ix - 1, iy] if ix > 0 else spin_matrix[num_spins - 1, iy]
+            right = spin_matrix[ix + 1, iy] if ix < (num_spins - 1) else spin_matrix[0, iy]
 
-        above = spin_matrix[ix, iy - 1] if iy > 0 else spin_matrix[ix, num_spins - 1]
-        below = spin_matrix[ix, iy + 1] if iy < (num_spins - 1) else spin_matrix[ix, 0]
+            above = spin_matrix[ix, iy - 1] if iy > 0 else spin_matrix[ix, num_spins - 1]
+            below = spin_matrix[ix, iy + 1] if iy < (num_spins - 1) else spin_matrix[ix, 0]
 
-        delta_energy = (2 * spin_matrix[ix, iy] * (left + right + above + below))
+            delta_energy = (2 * spin_matrix[ix, iy] * (left + right + above + below))
 
-        if np.random.random() <= np.exp(-delta_energy / temperature):
-            spin_matrix[ix, iy] *= -1.0
-            E = E + delta_energy
-            M = M + 2*spin_matrix[ix, iy]
-            accepted += 1
+            if np.random.random() <= np.exp(-delta_energy / temperature):
+                spin_matrix[ix, iy] *= -1.0
+                E = E + delta_energy
+                M = M + 2*spin_matrix[ix, iy]
+                accepted += 1
 
-        exp_values[i-1,0] = E
-        exp_values[i-1,1] = M
-        exp_values[i-1,2] = E**2
-        exp_values[i-1,3] = M**2
-        exp_values[i-1,4] = np.abs(M)
-        exp_values[i-1,5] = accepted
+        exp_values[i-1,0] += E
+        exp_values[i-1,1] += M
+        exp_values[i-1,2] += E**2
+        exp_values[i-1,3] += M**2
+        exp_values[i-1,4] += np.abs(M)
+        exp_values[i-1,5] += accepted
 
     norm = 1/float(num_cycles)
 
