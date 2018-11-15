@@ -52,6 +52,8 @@ def MC(spin_matrix, num_cycles, temperature):
         exp_values[i-1,4] += np.abs(M)
         exp_values[i-1,5] += accepted
 
+    return exp_values
+    """
     norm = 1/float(num_cycles)
 
     energy_avg = np.cumsum(exp_values[:,0])/np.arange(1, num_cycles+1)
@@ -74,3 +76,4 @@ def MC(spin_matrix, num_cycles, temperature):
     X = magnet_var/temperature
 
     return energy_avg, magnet_abs_avg, magnet_avg, C_v, X, accepted_list
+    """
