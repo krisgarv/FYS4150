@@ -21,9 +21,10 @@ def Accepted(ordered):
             #ground state
             spin_matrix = np.ones((num_spins,num_spins), np.int8)
 
-        Energy, MagnetizationAbs, magnet_avg, C_v, X, accepted_list_T1= I.MC(spin_matrix, MC_cycles, Temp[0])
-        Energy, MagnetizationAbs, magnet_avg, C_v, X, accepted_list_T24 = I.MC(spin_matrix, MC_cycles, Temp[1])
-
+        exp_values_T1= I.MC(spin_matrix, MC_cycles, Temp[0])
+        exp_values_T24 = I.MC(spin_matrix, MC_cycles, Temp[1])
+        accepted_list_T1 = exp_values_T1[:,5]
+        accepted_list_T24 = exp_values_T24[:,5]
         ordered=True
         #plt.suptitle('{}'.format(titles[i]))
         ax[i].set_title('{}'.format(titles[i]))
