@@ -44,12 +44,12 @@ def MC(spin_matrix, num_cycles, temperature):
             M = M + 2*spin_matrix[ix, iy]
             accepted += 1
 
-        exp_values[i,0] = E
-        exp_values[i,1] = M
-        exp_values[i,2] = E**2
-        exp_values[i,3] = M**2
-        exp_values[i,4] = np.abs(M)
-        exp_values[i,5] = accepted
+        exp_values[i-1,0] = E
+        exp_values[i-1,1] = M
+        exp_values[i-1,2] = E**2
+        exp_values[i-1,3] = M**2
+        exp_values[i-1,4] = np.abs(M)
+        exp_values[i-1,5] = accepted
 
     norm = 1/float(num_cycles)
 
@@ -67,6 +67,7 @@ def MC(spin_matrix, num_cycles, temperature):
     magnet_var = (magnet2_avg - magnet_abs_avg[-1]**2)/(num_spins**2)
 
     energy_avg = energy_avg/num_spins**2
+    magnet_abs_avg = magnet_abs_avg/num_spins**2
     magnet_avg = magnet_avg/num_spins**2
     C_v = energy_var/temperature**2
     X = magnet_var/temperature
