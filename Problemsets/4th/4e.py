@@ -11,7 +11,7 @@ sns.set_context('talk')
 #spin_matrix = np.random.choice((-1, 1), (num_spins, num_spins))
 
 L = [40,60,80,100]
-T = np.arange(2.0, 2.31, 0.05)
+T = np.arange(2.1, 2.51, 0.05)
 #print(T)
 
 MC_cycles = 100000
@@ -62,14 +62,16 @@ for i in range(4):
 plt.suptitle('Numerical studies of phase transitions')
 plt.show()
 
-max_1 = X[2, :].index(np.amax(X[2, :]))
-max_2 = X[3, :].index(np.amax(X[3, :]))
-Tc_L1 = T[max_1]
+#max_2 = X[2, :].index(np.amax(X[2, :]))
+#max_3 = X[3, :].index(np.amax(X[3, :]))
+max_2 = np.argmax(X[2, :])
+max_3 = np.argmax(X[3, :])
 Tc_L2 = T[max_2]
+Tc_L3 = T[max_3]
 #v = 1.0
 #exponent = -(1./v)
 exponent = -1.0
-Tc_infinity = Tc_L1 - ((Tc_L1-Tc_L2)/(L[2]**exponent-L[3]**exponent))*(L[2]**exponent)
+Tc_infinity = Tc_L2 - ((Tc_L2-Tc_L3)/(L[2]**exponent-L[3]**exponent))*(L[2]**exponent)
 print(Tc_infinity)
 
 """
