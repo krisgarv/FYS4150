@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numba
 import scipy.linalg as sl
-
+"""
 @numba.njit(cache = True)
 def FwdStep(alpha, vPrev, N):
     v = np.zeros(N-1)
@@ -10,63 +10,53 @@ def FwdStep(alpha, vPrev, N):
         v[x] = alpha*vPrev[x-1] + (1.0-2*alpha)*vPrev[x] + alpha*vPrev[x+1]
     return v
 """
+def tridiag(alpha, u, N):
+    b = 2.0 + 2.0*alpha
+    a = c = -alpha
+    b_hat = np.zeros(N+1) + b
 
-def FwdStep(alpha, vPrev, N):
-    A = np.zeros((N+1, N+1)) + np.diag(2.0-2.0*alpha*np.ones(N+1)) + \
-    np.diag((alpha)*np.ones(N), k=1) + np.diag((alpha)*np.ones(N), k=-1)
-    v = np.matmul(A, vPrev)
-    return v
-def LU_decomp(alpha, vPrev, N):
-    A = np.zeros((N+1, N+1)) + np.diag(1.0+2.0*alpha*np.ones(N+1)) + \
-    np.diag(-alpha*np.ones(N), k=1) + np.diag(-alpha*np.ones(N), k=-1)
-    lu, piv = sl.lu_factor(A, overwrite_a=True, check_finite=False)
-    LHS = sl.lu_solve((lu, piv), vPrev, trans=0, overwrite_b=True, check_finite=False)
-    return LHS
-def ForwardEuler(alpha, v, T, N):
-    for t in range(1, T+1):
-        v[t, :] = FwdStep(alpha, v[t-1, :], N)
-    return v
+    # Forward Substitute
+    for i in range(1, N):
+        b_hat[i] = b - a*c/float(b_hat[i-1])
+        u[i] = u[i] - a*u[i+1]/float(b_hat[i])
+    # Backward substitute
+    for i in range(N, 0, -1):
+        u[i] = (u[i]-c*u[i+1])/float(b_hat[i])
+    return u
 
-def BackwardEuler(alpha, v, T, N):
-    for t in range(1, T+1):
-        v[t, :] = LU_decomp(alpha, v[t-1, :], N)
-    print(v[0, :]) # BURDE VÆRE UENDRET [0, 0, ..., 0, 0, 1], MEN ER IKKE DET!
-    return v
 
-def CrankNicolson(alpha, v, T, N):
-    for t in range(1, T+1):
-        v[t, :] = FwdStep(alpha/2, v[t-1, :], N)
-        v[t, :] = LU_decomp(alpha/2, v[t, :], N)
-    return v
+def ForwardEuler(alpha, v, N, T):
+	#Explicit forward euler SCHEME
+	for t in range(1, T+1):
+		for x in range(1, N):
+			v[t,x]= alpha*v[t-1,x-1] + (1.0-2.0*alpha)*v[t-1,x] + alpha*v[t-1,x+1]
+	return v
 
-def FwdStep(alpha, vPrev, N):
-    A = np.zeros((N-1, N-1)) + np.diag(2.0-2.0*alpha*np.ones(N-1)) + \
-    np.diag((alpha)*np.ones(N-2), k=1) + np.diag((alpha)*np.ones(N-2), k=-1)
-    v = np.matmul(A, vPrev)
-    return v
-"""
-def LU_decomp(alpha, vPrev, N):
-    A = np.zeros((N-1, N-1)) + np.diag(1.0+2.0*alpha*np.ones(N-1)) + \
-    np.diag(-alpha*np.ones(N-2), k=1) + np.diag(-alpha*np.ones(N-2), k=-1)
+def LU_decomp(A, vPrev, N):
     lu, piv = sl.lu_factor(A, overwrite_a=True, check_finite=False)
     LHS = sl.lu_solve((lu, piv), vPrev, trans=0, overwrite_b=True, check_finite=False)
     return LHS
 
-
-def ForwardEuler(alpha, v, T, N):
+def BackwardEuler(alpha, v, N, T):
+    A = np.zeros((N, N)) + np.diag(1.0+2.0*alpha*np.ones(N)) + \
+    np.diag(-alpha*np.ones(N-1), k=1) + np.diag(-alpha*np.ones(N-1), k=-1)
     for t in range(1, T+1):
-        v[t, 1:-1] = FwdStep(alpha, v[t-1, :], N)
-    print(v[0, :])
+        v[t, 1:-1] = LU_decomp(A, v[t-1, 1:-1], N)
     return v
 
-def BackwardEuler(alpha, v, T, N):
+def CrankNicolson_LU(alpha, v, N, T):
+    A = np.zeros((N, N)) + np.diag(2.0+2.0*alpha*np.ones(N)) + \
+    np.diag(-alpha*np.ones(N-1), k=1) + np.diag(-alpha*np.ones(N-1), k=-1)
     for t in range(1, T+1):
-        v[t, 1:-1] = LU_decomp(alpha, v[t-1, 1:-1], N)
-    print(v[0, :]) # BURDE VÆRE UENDRET [0, 0, ..., 0, 0, 1], MEN ER IKKE DET!
+        for x in range(1, N):
+            v[t, x]= alpha*v[t-1,x-1] + (2.0-2.0*alpha)*v[t-1,x] + alpha*v[t-1,x+1]
+            #v[t, 1:-1] = 2.0*FwdStep(alpha/2.0, v[t-1, :], N)
+        v[t, 1:-1] = LU_decomp(A, v[t, 1:-1], N)
     return v
 
-def CrankNicolson(alpha, v, T, N):
+def CrankNicolson_TD(alpha, v, N, T):
     for t in range(1, T+1):
-        v[t, 1:-1] = FwdStep(alpha/2, v[t-1, :], N)
-        v[t, 1:-1] = LU_decomp(alpha/2, v[t, 1:-1], N)
+        for x in range(1, N):
+            v[t, x]= alpha*v[t-1,x-1] + (2.0-2.0*alpha)*v[t-1,x] + alpha*v[t-1,x+1]
+        v[t, :] = tridiag(alpha, v[t, :], N)
     return v

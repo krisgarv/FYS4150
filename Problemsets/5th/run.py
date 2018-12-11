@@ -1,58 +1,83 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import solver as s
-#===========Initial variables for CrankNicolson===============================
+import seaborn as sns
+sns.set_style('white')
+sns.set_style('ticks')
+#sns.set_context('talk')
+
+#===================Initializing input===============================
 N = 100
-T = 50000
-alpha = 0.5
+T = 20000
+dx=1.0/N
+dt=1.0/T
+alpha = dt/(dx*dx)
+#t_list=[0, 1, 10, 100, 200]
+t_list=[0, 10, 1000]
 # Initial conditions v(0, x) = u(0, x) - x = -x
-x = np.linspace(0, 1, N+1)
+x = np.linspace(0, 1, N+2)
 # Initial matrix for storing v-values
 # v[t, x]
-u = np.zeros((T+1, N+1))
-vi = np.zeros((T+1, N+1))
-u[1:, -1] = 1.0
-print(u[0, :])
+u = np.zeros((T+1, N+2))
+vi = np.zeros((T+1, N+2))
+u[:, -1] = 1.0
+u[0, :] = 0.0
 for t in range(T+1):
     vi[t, :] = u[t, :]-x
 vi[:,0] = vi[:,N] = 0.0
 
-#===============================================================================
-u_FE = np.zeros((T+1, N+1))
-v_FE = s.ForwardEuler(alpha, vi, T, N)
+#===============Analytic solution================================================================
+"""
+u_FE = np.zeros_like(u)
+u_FE[:, -1] = 1.0
+v_FE = s.ForwardEuler(alpha, vi, N, T)
 for t in range(0, T+1):
-    u_FE[t, :] = v_FE[t, :] + x
+    u_FE[t, 1:-1] = v_FE[t, 1:-1] + x[1:-1]
 plt.figure(1)
-for t in [0, 1, 10, 100, 200]:
+for t in t_list:
     plt.plot(x, u_FE[t, :], label='t={}'.format(t))
     plt.title('Forward Euler')
     plt.legend()
 
-u_BE = np.zeros((T+1, N+1))
-v_BE = s.BackwardEuler(alpha, vi, T, N)
+u_BE = np.zeros_like(u)
+u_BE[:, -1] = 1.0
+v_BE = s.BackwardEuler(alpha, vi, N, T)
 for t in range(0, T+1):
-    u_BE[t, :] = v_BE[t, :] + x
+    u_BE[t, 1:-1] = v_BE[t, 1:-1] + x[1:-1]
 plt.figure(2)
-for t in [0, 1, 10, 100, 200]:
+for t in t_list:
     plt.plot(x, u_BE[t, :], label='t={}'.format(t))
     plt.title('Backward Euler')
     plt.legend()
 
-u_CN = np.zeros((T+1, N+1))
-v_CN = s.CrankNicolson(alpha, vi, T, N)
+u_CN = np.zeros_like(u)
+u_CN[:, -1] = 1.0
+v_CN = s.CrankNicolson_LU(alpha, vi, N, T)
 for t in range(0, T+1):
-    u_CN[t, :] = v_CN[t, :] + x
+    u_CN[t, 1:-1] = v_CN[t, 1:-1] + x[1:-1]
 plt.figure(3)
-for t in [0, 1, 10, 100, 200]:
+for t in t_list:
     plt.plot(x, u_CN[t, :], label='t={}'.format(t))
-    plt.title('Crank Nicolson')
+    plt.title('Crank Nicolson, LU')
     plt.legend()
 
-plt.figure(4)
-for t in [0, 1, 10, 100, 200]:
-    plt.plot(x, u_CN[t, :], color='b', label='CrankNicolson')
-for t in [0, 1, 10, 100, 200]:
-    plt.plot(x, u_BE[t, :], color='r', label='BackwardEuler')
-plt.plot()
+for i, t in enumerate(t_list):
+    plt.figure(5+i)
+    plt.plot(x, u_BE[t, :], 'C0', label='BE, t={}'.format(t))
+    plt.plot(x, u_FE[t, :], 'C1', label='FE, t={}'.format(t))
+    plt.plot(x, u_CN[t, :], 'C2', label='CN, t={}'.format(t))
+    plt.legend(loc='best')
+"""
+plt.figure()
+for i, t in enumerate(t_list):
+    u=np.zeros_like(x)
+    v=np.zeros_like(x)
+    for n in range(N+1):
+        v += np.sin(np.pi*n*x)*np.exp(-np.pi*n**2*float(t))/float(np.pi*n)
+    u=x+2*v
+    plt.plot(u, x, 'C{}'.format(i), label='t={}'.format(t))
+    plt.xlabel('x')
+    plt.ylabel('u(t, x)')
+    plt.legend()
+    plt.title('Analytical soluion of 1D diffusion equation')
 plt.show()
-#[0, 10, 100, 500, 2000, 10000, 50000]
