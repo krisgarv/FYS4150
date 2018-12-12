@@ -16,7 +16,7 @@ def JacobiImplicit(alpha, u, N, T):
         for t in range(1, T):
             for x in range(1, N+1):
                 for y in range(1, N+1):
-                    u[x, y] = (1.0/float(1.+4.*alpha))*(uPrev[x,y] + \
+                    u[x, y] = (1.0/(1.0+4.0*alpha))*(uPrev[x,y] + \
                     alpha*(uTmp[x+1,y] + uTmp[x-1,y] + uTmp[x,y+1] + \
                     uTmp[x,y-1]))
             iter += 1
@@ -25,17 +25,32 @@ def JacobiImplicit(alpha, u, N, T):
             uPrev = u
     return u
 
+def analytic2D(x, N):
+    plt.figure()
+    t = x
+    X,Y =np.meshgrid(x,t)
+    u=np.zeros_like(X)
+    for k in range(1, N):
+        u += 2*np.sin(k*np.pi*x)*np.exp(np.pi*np.sqrt(2.0*k)*t)
+    u = 4.0*u/float(np.pi)
+    #plt.plot(u, x, 'C{}'.format(i), label='t={}'.format(t))
+    plt.contour(X, Y, u)
+    plt.xlabel('x')
+    plt.ylabel('u(t, x)')
+    #plt.legend()
+    plt.title('Analytical soluion of 2D diffusion equation')
+
 N = 50
 N = 50
 dx = 1.0/N
 dt = 0.001
 T  = 1000
 L=1.0
-Tfinal=0.1
+Tfinal=0.1 # Brukes ikke til noe...
 alpha=dt/float(dx**2)
 x = np.linspace(0, 1, N+2)
 y = np.linspace(0, 1, N+2)
-time = np.linspace(0, Tfinal, T)
+time = np.linspace(0, Tfinal, T) # Brukes ikke til noe...
 u = np.zeros((N+2, N+2))
 u[:, -1] = u[:, 0] = 1.0
 u[-1, :] = 1.0
@@ -43,28 +58,9 @@ u[-1, :] = 1.0
 v = JacobiImplicit(alpha, u, N, T)
 
 X,Y =np.meshgrid(x,y)
-plt.contour(X, Y, u)
+plt.contour(X, Y, v)
+plt.title('Numerical soluion of 2D diffusion equation')
 plt.xlabel('x')
 plt.ylabel('y')
-plt.legend()
-plt.show()
-"""
-fig, ax = plt.figure()
-
-
-fig= plt.figure()
-plt.hold('on')
-ax = fig.add_subplot(111)
-
-
-cont=ax.contour(X,Y,u)
-plt.tight_layout()
-#plt.axis([0.99, 1.0,0.0, 0.03])
-plt.xlabel('$x$')
-plt.ylabel('$y$')
-
-plt.title('2D diffusion equation with dx= %1.2f, dt= %1.3f, alpha= %1.1f, t= %1.1f '%(dx,dt,alpha,Tfinal))
-plt.legend(loc= 'best')
-#plt.savefig('boundaryhallo1.pdf')
-"""
+analytic2D(x, N)
 plt.show()
