@@ -9,15 +9,15 @@ def JacobiImplicit(alpha, u, N, T):
     uPrev = np.zeros_like(u)
     uPrev = np.copy(u)
     uTmp = np.copy(uPrev)
-    tol = 10e-7
+    tol = 10e-13
     max_iter = N**3
     r=0
-    converged=False
+    #converged=False
     for n in range(0, T+1):
         # Solve linear system by Jacobi iteration at time level n+1
-        converged = False
         r = 0
-        while not converged:
+        diff=1.0
+        while(diff > tol and r < max_iter):
             # Interior:
             for x in range(1, N+1):
                 for y in range(1, N+1):
@@ -25,10 +25,11 @@ def JacobiImplicit(alpha, u, N, T):
                     alpha*(uTmp[y, x+1] + uTmp[y, x-1] + uTmp[y+1, x] + \
                     uTmp[y-1, x]))
             r += 1
-            converged = np.abs(u-uTmp).max() < tol or r >= max_iter
+            diff = np.abs(u-uTmp).max()
             uTmp = np.copy(uPrev)
             uPrev = np.copy(u)
-    print('T=', T, 'n=', n, 'converged=',converged, 'r=', r)
+
+            print('T=', T, 't=', n, 'r=', r, 'diff=', diff)
     return u
 
 def analytic2D(x, y, N, t_list):
@@ -83,7 +84,6 @@ u[-1, :] = 0.0
 
 for t_max in t_list:
     T = int(round(t_max/dt))
-    print(T)
     v = JacobiImplicit(alpha, u, N, T)
     plt.figure()
     X,Y =np.meshgrid(x,y)
