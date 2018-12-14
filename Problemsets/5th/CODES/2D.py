@@ -57,14 +57,13 @@ def analytic2D(x, y, N, t_list):
     and plots a contour plot for each t-max in the t_list
     """
     for t in t_list:
-        plt.figure()
+        plt.figure(figsize=(7, 7))
         X,Y = np.meshgrid(x,y)
         u_a = np.sin(np.pi*X)*np.sin(np.pi*Y)*np.exp(-2*np.pi**2*t)
         plt.contour(X, Y, u_a, cmap='viridis')
-        plt.gca().invert_yaxis()
         plt.xlabel('x')
-        plt.ylabel('u(x, y, t)')
-        plt.title('Analytical soluion of 2D diffusion equation, t_max=%f'%t)
+        plt.ylabel('y')
+        plt.title('Analytic t-max=%.2f'%t)
 
 #======================= Initial values =====================================
 N       = 100
@@ -97,14 +96,13 @@ u[-1, :] = 0.0
 for t_max in t_list:
     T = int(round(t_max/dt))
     v = JacobiImplicit(alpha, u, N, T)
-    plt.figure()
+    plt.figure(figsize=(7, 7))
     X,Y =np.meshgrid(x,y)
     plt.contour(X, Y, v, cmap='viridis')
-    plt.gca().invert_yaxis()
-    plt.title('Numerical soluion of 2D diffusion equation, t_max = %f'%t_max)
+    plt.title('Numerical t-max = %.2f'%t_max)
     plt.xlabel('x')
     plt.ylabel('y')
-    
+
 # Calling the analytic function with the same t_list and spacing
 analytic2D(x, y, N, t_list)
 
